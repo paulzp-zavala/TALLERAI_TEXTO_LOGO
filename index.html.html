@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller Interactivo: Tipografía, Herramienta Texto e Identidad Visual en Illustrator</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts para muestras tipográficas reales e interfaz -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Montserrat:wght@400;600;800&family=Pacifico&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ai: {
+              bg: '#1E1E1E',
+              panel: '#2C2C2C',
+              subpanel: '#383838',
+              input: '#1F1F1F',
+              border: '#4A4A4A',
+              orange: '#FF9A00',
+              orangeDark: '#331D00',
+              blue: '#4B9BFF',
+              text: '#E6E6E6',
+              muted: '#A3A3A3'
+            },
+            editorial: {
+              cream: '#F5F3EE',
+              navy: '#0F1E36'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            serifDisplay: ['Playfair Display', 'serif'],
+            sansGeo: ['Montserrat', 'sans-serif'],
+            script: ['Pacifico', 'cursive'],
+            display: ['Abril Fatface', 'serif'],
+            condensed: ['Bebas Neue', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Estilos base inspirados en Adobe Illustrator CC */
+    body {
+      background-color: #1E1E1E;
+      color: #E6E6E6;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar estilo Illustrator */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1E1E1E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #4A4A4A;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF9A00;
+    }
+
+    /* Cuadrícula sutil de mesa de trabajo */
+    .artboard-grid {
+      background-color: #252525;
+      background-image: radial-gradient(#3A3A3A 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    /* Inputs numéricos estilo panel de propiedades */
+    .ai-input {
+      background-color: #1F1F1F;
+      border: 1px solid #4A4A4A;
+      color: #F3F4F6;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.82rem;
+      transition: border-color 0.15s ease;
+    }
+    .ai-input:focus {
+      outline: none;
+      border-color: #FF9A00;
+    }
+
+    /* Botón de herramienta activo estilo Illustrator */
+    .tool-item.active {
+      background-color: #464646;
+      border-left: 3px solid #FF9A00;
+      color: #FFFFFF;
+    }
+
+    /* Animación de separación de Imagotipo */
+    .imago-icon, .imago-text {
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    }
+    .imago-separated .imago-icon {
+      transform: translate(-18px, -10px) scale(0.96);
+    }
+    .imago-separated .imago-text {
+      transform: translate(18px, 10px) scale(0.96);
+    }
+
+    /* Animación de vibración para Isologo indivisible */
+    @keyframes shakeLock {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+    .shake-lock {
+      animation: shakeLock 0.45s ease-in-out;
+    }
+
+    /* Estilos de impresión exclusivos para la Constancia de Aprobación */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #certificate-printable, #certificate-printable * {
+        visibility: visible;
+      }
+      #certificate-printable {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: #F5F3EE !important;
+        color: #0F1E36 !important;
+        border: 8px double #0F1E36 !important;
+        padding: 40px !important;
+        box-shadow: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-ai-orange selection:text-black">
+
+  <!-- BARRA SUPERIOR (HEADER) CON IDENTIDAD ILLUSTRATOR Y AUTORÍA DOCENTE -->
+  <header class="bg-ai-panel border-b border-ai-border sticky top-0 z-40 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <!-- Logo Ai + Título del Taller -->
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-lg bg-[#330000] border-2 border-ai-orange flex items-center justify-center shrink-0 shadow-inner">
+          <span class="text-ai-orange font-extrabold text-xl tracking-tight">Ai</span>
+        </div>
+        <div>
+          <span class="text-[11px] uppercase tracking-widest text-ai-orange font-semibold block">Adobe Illustrator CC • Diseño Gráfico</span>
+          <h1 class="text-sm sm:text-base md:text-lg font-bold text-white leading-tight">
+            Taller Interactivo: Tipografía, Herramienta Texto e Identidad Visual
+          </h1>
+        </div>
+      </div>
+
+      <!-- Firma Institucional Permanente del Docente -->
+      <div class="flex items-center justify-between lg:justify-end gap-3 bg-ai-bg/80 border border-ai-border px-3.5 py-1.5 rounded-lg">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-ai-orange animate-pulse"></span>
+          <span class="text-xs sm:text-sm font-semibold text-white tracking-wide">Lic. Paul Zavala — Docente</span>
+        </div>
+        <span id="progress-label" class="text-xs font-mono bg-ai-subpanel text-ai-orange px-2 py-0.5 rounded border border-ai-border">
+          Progreso: 25%
+        </span>
+      </div>
+    </div>
+
+    <!-- Barra de Progreso Visual -->
+    <div class="w-full h-1.5 bg-ai-bg">
+      <div id="global-progress-bar" class="h-full bg-gradient-to-r from-ai-orange to-amber-400 transition-all duration-500" style="width: 25%;"></div>
+    </div>
+
+    <!-- Navegación en 4 Pestañas Principales -->
+    <nav class="max-w-7xl mx-auto px-4 pt-2 flex overflow-x-auto gap-1.5 no-scrollbar" aria-label="Navegación de módulos">
+      <button onclick="switchTab(1)" id="tab-btn-1" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-t border-x transition-all whitespace-nowrap bg-ai-bg text-ai-orange border-ai-border">
+        <span class="w-5 h-5 rounded-full bg-ai-orange text-black text-xs font-bold flex items-center justify-center">1</span>
+        <span>Herramienta Texto y Párrafo</span>
+        <span id="check-tab-1" class="text-emerald-400 text-xs">✓</span>
+      </button>
+
+      <button onclick="switchTab(2)" id="tab-btn-2" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium rounded-t-lg border-t border-x border-transparent text-ai-muted hover:text-white hover:bg-ai-subpanel/50 transition-all whitespace-nowrap">
+        <span class="w-5 h-5 rounded-full bg-ai-subpanel text-white text-xs font-bold flex items-center justify-center">2</span>
+        <span>Tipografías y Panel Carácter</span>
+        <span id="check-tab-2" class="hidden text-emerald-400 text-xs">✓</span>
+      </button>
+
+      <button onclick="switchTab(3)" id="tab-btn-3" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium rounded-t-lg border-t border-x border-transparent text-ai-muted hover:text-white hover:bg-ai-subpanel/50 transition-all whitespace-nowrap">
+        <span class="w-5 h-5 rounded-full bg-ai-subpanel text-white text-xs font-bold flex items-center justify-center">3</span>
+        <span>Tipos de Identidad Visual</span>
+        <span id="check-tab-3" class="hidden text-emerald-400 text-xs">✓</span>
+      </button>
+
+      <button onclick="switchTab(4)" id="tab-btn-4" class="tab-btn flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium rounded-t-lg border-t border-x border-transparent text-ai-muted hover:text-white hover:bg-ai-subpanel/50 transition-all whitespace-nowrap">
+        <span class="w-5 h-5 rounded-full bg-ai-subpanel text-white text-xs font-bold flex items-center justify-center">4</span>
+        <span>Evaluación Final (Nota ≥ 7/10)</span>
+        <span id="check-tab-4" class="hidden text-emerald-400 text-xs">✓</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 1: HERRAMIENTA TEXTO Y PANEL PÁRRAFO                         -->
+    <!-- ===================================================================== -->
+    <section id="section-1" class="space-y-6">
+      <!-- Encabezado del Módulo -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-ai-orange">Apartado 01 • Vectorización y Flujo Editorial</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">Herramienta Texto y Panel Párrafo en Illustrator</h2>
+          <p class="text-sm text-ai-muted mt-1">Selecciona cada variante del menú desplegable de Illustrator para experimentar su comportamiento en la mesa de trabajo y configura los parámetros del Panel Párrafo.</p>
+        </div>
+        <button onclick="switchTab(2)" class="self-start md:self-center px-4 py-2 bg-ai-subpanel hover:bg-ai-orange hover:text-black text-white text-xs font-semibold rounded-lg border border-ai-border transition">
+          Siguiente Apartado →
+        </button>
+      </div>
+
+      <!-- Bloque 1A: Menú Desplegable de Herramientas + Lienzo Interactivo -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Menú Lateral Idéntico al Desplegable de Illustrator -->
+        <div class="lg:col-span-5 bg-ai-panel border border-ai-border rounded-xl overflow-hidden shadow-md">
+          <div class="bg-ai-subpanel px-4 py-2.5 border-b border-ai-border flex items-center justify-between">
+            <span class="text-xs font-semibold tracking-wide text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-ai-orange"></span>
+              Menú Herramienta Texto (Clic para probar)
+            </span>
+            <span class="text-[11px] font-mono text-ai-muted">Barra de herramientas</span>
+          </div>
+
+          <div id="text-tools-list" class="divide-y divide-ai-border/50">
+            <!-- Generado dinámicamente por JS para máxima limpieza y control -->
+          </div>
+        </div>
+
+        <!-- Mesa de Trabajo Dinámica (Artboard) -->
+        <div class="lg:col-span-7 bg-ai-panel border border-ai-border rounded-xl overflow-hidden flex flex-col shadow-md">
+          <div class="bg-ai-subpanel px-4 py-2.5 border-b border-ai-border flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span id="active-tool-badge" class="px-2 py-0.5 text-xs font-mono font-bold bg-ai-orange text-black rounded">T</span>
+              <h3 id="active-tool-title" class="text-sm font-bold text-white">Herramienta Texto (Texto de punto)</h3>
+            </div>
+            <span id="active-tool-shortcut" class="text-xs font-mono text-ai-muted bg-ai-bg px-2.5 py-0.5 rounded border border-ai-border">Atajo: T</span>
+          </div>
+
+          <!-- Explicación técnica -->
+          <div class="px-5 py-3 bg-ai-bg/60 border-b border-ai-border">
+            <p id="active-tool-desc" class="text-xs sm:text-sm text-gray-300 leading-relaxed"></p>
+          </div>
+
+          <!-- Lienzo Visual Interactivo -->
+          <div id="tool-canvas-area" class="flex-1 artboard-grid p-5 sm:p-8 flex flex-col items-center justify-center min-h-[310px] relative">
+            <!-- Renderizado dinámicamente según herramienta elegida -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque 1B: Simulador Funcional del Panel Párrafo -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl overflow-hidden shadow-md">
+        <div class="bg-ai-subpanel px-4 py-2.5 border-b border-ai-border flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-semibold text-ai-muted">Carácter</span>
+            <span class="text-xs font-bold text-white border-b-2 border-ai-orange pb-1">Párrafo</span>
+            <span class="text-xs font-semibold text-ai-muted">OpenType</span>
+          </div>
+          <span class="text-xs font-mono text-ai-orange">Ventana &gt; Texto &gt; Párrafo (Alt+Ctrl+T)</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 p-5">
+          <!-- Controles estilo Illustrator -->
+          <div class="lg:col-span-5 space-y-4 bg-ai-subpanel/50 p-4 rounded-lg border border-ai-border">
+            <!-- Fila de Alineación -->
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-ai-muted mb-2 font-semibold">Alineación de párrafo</label>
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="setParaAlign('left')" id="align-left" class="para-align-btn bg-ai-orange text-black p-2 rounded border border-ai-border flex flex-col items-center gap-1 text-[11px] font-semibold" title="Alinear a la izquierda">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 10h12M3 14h16M3 18h10"/></svg>
+                  <span>Izquierda</span>
+                </button>
+                <button onclick="setParaAlign('center')" id="align-center" class="para-align-btn bg-ai-input text-gray-300 hover:text-white p-2 rounded border border-ai-border flex flex-col items-center gap-1 text-[11px]" title="Centrar">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M6 10h12M4 14h16M7 18h10"/></svg>
+                  <span>Centrar</span>
+                </button>
+                <button onclick="setParaAlign('right')" id="align-right" class="para-align-btn bg-ai-input text-gray-300 hover:text-white p-2 rounded border border-ai-border flex flex-col items-center gap-1 text-[11px]" title="Alinear a la derecha">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M9 10h12M5 14h16M11 18h10"/></svg>
+                  <span>Derecha</span>
+                </button>
+                <button onclick="setParaAlign('justify')" id="align-justify" class="para-align-btn bg-ai-input text-gray-300 hover:text-white p-2 rounded border border-ai-border flex flex-col items-center gap-1 text-[11px]" title="Justificar con última línea a la izquierda">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 10h18M3 14h18M3 18h11"/></svg>
+                  <span>Justificar</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Sangrías (Indents) -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-ai-border">
+              <div>
+                <label class="flex items-center justify-between text-xs text-gray-300 mb-1">
+                  <span>Sangría izquierda</span>
+                  <span class="font-mono text-[11px] text-ai-orange">pt</span>
+                </label>
+                <input type="number" id="para-indent-left" value="0" min="0" max="80" step="2" oninput="updateParagraphPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div>
+                <label class="flex items-center justify-between text-xs text-gray-300 mb-1">
+                  <span>Sangría derecha</span>
+                  <span class="font-mono text-[11px] text-ai-orange">pt</span>
+                </label>
+                <input type="number" id="para-indent-right" value="0" min="0" max="80" step="2" oninput="updateParagraphPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div class="col-span-2">
+                <label class="flex items-center justify-between text-xs text-gray-300 mb-1">
+                  <span>Sangría de primera línea</span>
+                  <span class="font-mono text-[11px] text-ai-orange">pt</span>
+                </label>
+                <input type="number" id="para-indent-first" value="16" min="0" max="60" step="2" oninput="updateParagraphPreview()" class="ai-input w-full font-mono">
+              </div>
+            </div>
+
+            <!-- Espaciado entre párrafos -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-ai-border">
+              <div>
+                <label class="flex items-center justify-between text-xs text-gray-300 mb-1">
+                  <span>Espacio antes</span>
+                  <span class="font-mono text-[11px] text-ai-orange">pt</span>
+                </label>
+                <input type="number" id="para-space-before" value="0" min="0" max="40" step="2" oninput="updateParagraphPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div>
+                <label class="flex items-center justify-between text-xs text-gray-300 mb-1">
+                  <span>Espacio después</span>
+                  <span class="font-mono text-[11px] text-ai-orange">pt</span>
+                </label>
+                <input type="number" id="para-space-after" value="10" min="0" max="40" step="2" oninput="updateParagraphPreview()" class="ai-input w-full font-mono">
+              </div>
+            </div>
+
+            <!-- Casilla Separar (Guiones) + Reset -->
+            <div class="pt-2 border-t border-ai-border flex items-center justify-between">
+              <label class="inline-flex items-center gap-2 cursor-pointer select-none">
+                <input type="checkbox" id="para-hyphenate" checked onchange="updateParagraphPreview()" class="w-4 h-4 accent-ai-orange rounded">
+                <span class="text-xs font-medium text-white">Separar (Guiones automáticos)</span>
+              </label>
+              <button onclick="resetParagraphPanel()" class="text-xs text-ai-orange hover:underline">Restaurar</button>
+            </div>
+          </div>
+
+          <!-- Vista Previa Editorial en Vivo -->
+          <div class="lg:col-span-7 flex flex-col">
+            <div class="text-xs text-ai-muted mb-2 flex items-center justify-between">
+              <span>Marco de Texto de Área (Vista previa en tiempo real)</span>
+              <span class="font-mono text-[11px] text-ai-blue">Caja delimitadora activa</span>
+            </div>
+            <div class="flex-1 bg-editorial-cream text-editorial-navy rounded-lg p-6 border-2 border-ai-blue relative shadow-inner overflow-hidden">
+              <!-- Manejadores vectoriales decorativos en esquinas -->
+              <span class="w-2.5 h-2.5 bg-white border-2 border-ai-blue absolute top-0 left-0"></span>
+              <span class="w-2.5 h-2.5 bg-white border-2 border-ai-blue absolute top-0 right-0"></span>
+              <span class="w-2.5 h-2.5 bg-white border-2 border-ai-blue absolute bottom-0 left-0"></span>
+              <span class="w-2.5 h-2.5 bg-white border-2 border-ai-blue absolute bottom-0 right-0"></span>
+
+              <div id="paragraph-preview-box" lang="es" class="text-sm sm:text-base leading-relaxed transition-all duration-150">
+                <p id="para-sample-1">La tipografía editorial exige un equilibrio constante entre la longitud de línea, las sangrías y la separación silábica automática para evitar ríos visuales dentro de una columna de lectura.</p>
+                <p id="para-sample-2">En Adobe Illustrator, el Panel Párrafo controla la estructura global de cada bloque de texto de área, permitiendo ajustar con precisión matemática el espacio antes y después de cada párrafo sin recurrir a saltos de línea vacíos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 2: TIPOGRAFÍAS, FUENTES Y PANEL CARÁCTER                     -->
+    <!-- ===================================================================== -->
+    <section id="section-2" class="hidden space-y-6">
+      <!-- Encabezado del Módulo -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-ai-orange">Apartado 02 • Clasificación y Microtipografía</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">Tipografías, Fuentes y Panel Carácter</h2>
+          <p class="text-sm text-ai-muted mt-1">Explora las cuatro familias tipográficas fundamentales y manipula los controles de Kerning, Tracking e Interlineado tanto en el Panel Carácter como en el diagrama técnico.</p>
+        </div>
+        <button onclick="switchTab(3)" class="self-start md:self-center px-4 py-2 bg-ai-subpanel hover:bg-ai-orange hover:text-black text-white text-xs font-semibold rounded-lg border border-ai-border transition">
+          Siguiente Apartado →
+        </button>
+      </div>
+
+      <!-- Bloque 2A: Clasificación Tipográfica Interactiva -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl p-5 shadow-md">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-ai-border">
+          <div>
+            <h3 class="text-base font-bold text-white">Clasificación Tipográfica para Diseño de Marca</h3>
+            <p class="text-xs text-ai-muted">Escribe una palabra de prueba para comparar cómo transmite distintas personalidades según la familia elegida.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="typo-live-word" class="text-xs text-ai-muted">Texto muestra:</label>
+            <input type="text" id="typo-live-word" value="Marca Creativa" maxlength="24" oninput="updateFontSamples(this.value)" class="ai-input w-44 font-medium">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Serif -->
+          <div class="bg-editorial-cream text-editorial-navy rounded-xl p-4 border border-ai-border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-editorial-navy text-white rounded">Serif</span>
+                <span class="text-[11px] text-gray-500 font-mono">Con remates</span>
+              </div>
+              <p class="typo-sample-text font-serifDisplay text-2xl sm:text-3xl font-bold my-4 break-words">Marca Creativa</p>
+              <p class="text-xs text-gray-700 leading-relaxed">Transmite <strong>tradición, autoridad, elegancia y prestigio editorial</strong>. Ej.: <em>Garamond, Bodoni, Playfair</em>.</p>
+            </div>
+            <button onclick="loadFontInCharacterPanel('Playfair Display, serif')" class="mt-4 w-full py-1.5 text-xs font-semibold bg-editorial-navy text-white hover:bg-ai-orange hover:text-black rounded-lg transition">
+              Probar en Panel Carácter
+            </button>
+          </div>
+
+          <!-- Sans Serif -->
+          <div class="bg-editorial-cream text-editorial-navy rounded-xl p-4 border border-ai-border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-editorial-navy text-white rounded">Sans Serif</span>
+                <span class="text-[11px] text-gray-500 font-mono">Palo seco</span>
+              </div>
+              <p class="typo-sample-text font-sansGeo text-2xl sm:text-3xl font-extrabold my-4 break-words">Marca Creativa</p>
+              <p class="text-xs text-gray-700 leading-relaxed">Transmite <strong>modernidad, limpieza, tecnología y alta legibilidad</strong> digital. Ej.: <em>Helvetica, Futura, Montserrat</em>.</p>
+            </div>
+            <button onclick="loadFontInCharacterPanel('Montserrat, sans-serif')" class="mt-4 w-full py-1.5 text-xs font-semibold bg-editorial-navy text-white hover:bg-ai-orange hover:text-black rounded-lg transition">
+              Probar en Panel Carácter
+            </button>
+          </div>
+
+          <!-- Script -->
+          <div class="bg-editorial-cream text-editorial-navy rounded-xl p-4 border border-ai-border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-editorial-navy text-white rounded">Script</span>
+                <span class="text-[11px] text-gray-500 font-mono">Caligráfica</span>
+              </div>
+              <p class="typo-sample-text font-script text-2xl sm:text-3xl my-4 break-words">Marca Creativa</p>
+              <p class="text-xs text-gray-700 leading-relaxed">Imita la escritura manual; aporta <strong>cercanía, dinamismo y carácter artesanal</strong>. Ej.: <em>Pacifico, Lobster, Brush Script</em>.</p>
+            </div>
+            <button onclick="loadFontInCharacterPanel('Pacifico, cursive')" class="mt-4 w-full py-1.5 text-xs font-semibold bg-editorial-navy text-white hover:bg-ai-orange hover:text-black rounded-lg transition">
+              Probar en Panel Carácter
+            </button>
+          </div>
+
+          <!-- Display -->
+          <div class="bg-editorial-cream text-editorial-navy rounded-xl p-4 border border-ai-border flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 bg-editorial-navy text-white rounded">Display</span>
+                <span class="text-[11px] text-gray-500 font-mono">Decorativa</span>
+              </div>
+              <p class="typo-sample-text font-display text-2xl sm:text-3xl my-4 break-words">Marca Creativa</p>
+              <p class="text-xs text-gray-700 leading-relaxed">Diseñada para <strong>alto impacto visual en titulares y logotipos</strong>; no apta para párrafos largos. Ej.: <em>Abril Fatface</em>.</p>
+            </div>
+            <button onclick="loadFontInCharacterPanel('Abril Fatface, serif')" class="mt-4 w-full py-1.5 text-xs font-semibold bg-editorial-navy text-white hover:bg-ai-orange hover:text-black rounded-lg transition">
+              Probar en Panel Carácter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloque 2B: Réplica Interactiva del Panel Carácter + Lámina Editorial de Microtipografía -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Panel Carácter estilo Illustrator -->
+        <div class="lg:col-span-6 bg-ai-panel border border-ai-border rounded-xl overflow-hidden shadow-md flex flex-col">
+          <div class="bg-ai-subpanel px-4 py-2.5 border-b border-ai-border flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold text-white border-b-2 border-ai-orange pb-1">Carácter</span>
+              <span class="text-xs font-semibold text-ai-muted">Párrafo</span>
+              <span class="text-xs font-semibold text-ai-muted">OpenType</span>
+            </div>
+            <span class="text-xs font-mono text-ai-orange">Ctrl/Cmd + T</span>
+          </div>
+
+          <div class="p-4 space-y-3.5 text-xs">
+            <!-- Selector de Fuente (con Fuentes Recientes) y Estilo -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+              <div class="sm:col-span-8">
+                <label class="block text-[11px] text-ai-muted mb-1">Fuente (Menú Texto &gt; Fuente)</label>
+                <select id="char-font-family" onchange="updateCharacterPreview()" class="ai-input w-full">
+                  <optgroup label="★ Fuentes recientes">
+                    <option value="Montserrat, sans-serif">Montserrat (Sans Serif)</option>
+                    <option value="Playfair Display, serif">Playfair Display (Serif)</option>
+                  </optgroup>
+                  <optgroup label="Todas las familias">
+                    <option value="Inter, sans-serif">Inter (Myriad / Neo-Grotesque)</option>
+                    <option value="Pacifico, cursive">Pacifico (Script)</option>
+                    <option value="Abril Fatface, serif">Abril Fatface (Display)</option>
+                    <option value="Bebas Neue, sans-serif">Bebas Neue (Condensada)</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="sm:col-span-4">
+                <label class="block text-[11px] text-ai-muted mb-1">Estilo</label>
+                <select id="char-font-style" onchange="updateCharacterPreview()" class="ai-input w-full">
+                  <option value="normal-400">Regular</option>
+                  <option value="normal-700" selected>Bold</option>
+                  <option value="italic-400">Italic</option>
+                  <option value="italic-700">Bold Italic</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Tamaño e Interlineado -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-ai-border">
+              <div>
+                <label class="flex justify-between text-[11px] text-ai-muted mb-1">
+                  <span title="Tamaño de fuente">TT Tamaño (pt)</span>
+                  <span id="val-char-size" class="font-mono text-ai-orange">28 pt</span>
+                </label>
+                <input type="range" id="char-size" min="16" max="46" value="28" oninput="updateCharacterPreview()" class="w-full accent-ai-orange">
+              </div>
+              <div>
+                <label class="flex justify-between text-[11px] text-ai-muted mb-1">
+                  <span title="Interlineado (Leading)">A/A Interlineado (pt)</span>
+                  <span id="val-char-leading" class="font-mono text-ai-orange">34 pt</span>
+                </label>
+                <input type="range" id="char-leading" min="20" max="60" value="34" oninput="updateCharacterPreview()" class="w-full accent-ai-orange">
+              </div>
+            </div>
+
+            <!-- Kerning y Tracking -->
+            <div class="grid grid-cols-2 gap-3 pt-2 border-t border-ai-border">
+              <div>
+                <label class="flex justify-between text-[11px] text-ai-muted mb-1">
+                  <span title="Kerning entre par de caracteres">V/A Kerning (par A-V)</span>
+                  <span id="val-char-kerning" class="font-mono text-ai-orange">-40</span>
+                </label>
+                <input type="range" id="char-kerning" min="-120" max="120" value="-40" step="10" oninput="updateCharacterPreview()" class="w-full accent-ai-orange">
+              </div>
+              <div>
+                <label class="flex justify-between text-[11px] text-ai-muted mb-1">
+                  <span title="Tracking global">VA Tracking (global)</span>
+                  <span id="val-char-tracking" class="font-mono text-ai-orange">40</span>
+                </label>
+                <input type="range" id="char-tracking" min="-50" max="300" value="40" step="10" oninput="updateCharacterPreview()" class="w-full accent-ai-orange">
+              </div>
+            </div>
+
+            <!-- Escala Vertical, Escala Horizontal, Desplazamiento Vertical y Rotación -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-ai-border">
+              <div>
+                <label class="block text-[10px] text-ai-muted mb-1">Escala V (%)</label>
+                <input type="number" id="char-scale-v" value="100" min="50" max="150" step="5" oninput="updateCharacterPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div>
+                <label class="block text-[10px] text-ai-muted mb-1">Escala H (%)</label>
+                <input type="number" id="char-scale-h" value="100" min="50" max="150" step="5" oninput="updateCharacterPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div>
+                <label class="block text-[10px] text-ai-muted mb-1">Desplaz. (pt)</label>
+                <input type="number" id="char-baseline" value="0" min="-20" max="20" step="2" oninput="updateCharacterPreview()" class="ai-input w-full font-mono">
+              </div>
+              <div>
+                <label class="block text-[10px] text-ai-muted mb-1">Rotación (°)</label>
+                <input type="number" id="char-rotate" value="0" min="-25" max="25" step="5" oninput="updateCharacterPreview()" class="ai-input w-full font-mono">
+              </div>
+            </div>
+
+            <!-- Botones de Transformación Tipográfica -->
+            <div class="pt-2 border-t border-ai-border flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5">
+                <button onclick="toggleCharFlag('allCaps')" id="btn-allCaps" class="px-2.5 py-1.5 rounded bg-ai-input border border-ai-border text-gray-300 font-bold" title="Todo mayúsculas">TT</button>
+                <button onclick="toggleCharFlag('smallCaps')" id="btn-smallCaps" class="px-2.5 py-1.5 rounded bg-ai-input border border-ai-border text-gray-300 font-semibold" title="Versalitas">Tt</button>
+                <button onclick="toggleCharFlag('underline')" id="btn-underline" class="px-2.5 py-1.5 rounded bg-ai-input border border-ai-border text-gray-300 underline" title="Subrayado">U</button>
+                <button onclick="toggleCharFlag('strike')" id="btn-strike" class="px-2.5 py-1.5 rounded bg-ai-input border border-ai-border text-gray-300 line-through" title="Tachado">S</button>
+              </div>
+              <button onclick="resetCharacterPanel()" class="text-xs text-ai-orange hover:underline">Restaurar valores</button>
+            </div>
+          </div>
+
+          <!-- Lienzo de salida del Panel Carácter -->
+          <div class="flex-1 artboard-grid p-5 flex items-center justify-center min-h-[140px] border-t border-ai-border">
+            <div id="char-preview-output" class="text-white text-center transition-all duration-150 select-none" style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; line-height: 34px; letter-spacing: 0.04em;">
+              <div><span id="char-pair-a">A</span><span id="char-pair-v" style="margin-left: -2px;">V</span>ANT GARDE</div>
+              <div>ESTUDIO VISUAL</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lámina Editorial SVG Interactiva de Microtipografía (Kerning, Tracking e Interlineado) -->
+        <div class="lg:col-span-6 bg-editorial-cream text-editorial-navy rounded-xl border border-ai-border p-5 shadow-md flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-editorial-navy/20 pb-3 mb-4">
+              <div>
+                <span class="text-[11px] font-mono uppercase tracking-wider text-red-700 font-bold">Lámina Técnica en Vivo</span>
+                <h3 class="text-lg font-extrabold text-editorial-navy">Anatomía del Espaciado Tipográfico</h3>
+              </div>
+              <span class="text-xs font-mono bg-editorial-navy text-white px-2.5 py-1 rounded">Sincronizado</span>
+            </div>
+
+            <!-- Diagrama Visual con Flechas Rojas de Medición Técnica -->
+            <div class="space-y-5 py-2">
+              <!-- 1. KERNING -->
+              <div class="bg-white/70 rounded-lg p-3.5 border border-editorial-navy/15">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold uppercase text-red-700">1. Kerning (Ajuste entre 2 letras específicas)</span>
+                  <span id="diagram-kerning-badge" class="text-xs font-mono text-editorial-navy font-semibold">-40 / 1000 em</span>
+                </div>
+                <div class="flex flex-col items-center justify-center py-2">
+                  <div class="relative inline-flex items-baseline text-4xl sm:text-5xl font-extrabold tracking-normal text-editorial-navy select-none">
+                    <span>A</span>
+                    <!-- Indicador visual rojo entre A y Bt -->
+                    <span id="kerning-gap-box" class="inline-block relative h-10 transition-all duration-150" style="width: 10px;">
+                      <span class="absolute inset-y-0 left-0 w-[1.5px] bg-red-600"></span>
+                      <span class="absolute inset-y-0 right-0 w-[1.5px] bg-red-600"></span>
+                      <span class="absolute top-1/2 -translate-y-1/2 inset-x-0 h-[1.5px] bg-red-600"></span>
+                    </span>
+                    <span>Bt</span>
+                  </div>
+                  <span class="text-[11px] font-semibold text-red-700 mt-1">↔ Corrige huecos ópticos puntuales</span>
+                </div>
+              </div>
+
+              <!-- 2. TRACKING -->
+              <div class="bg-white/70 rounded-lg p-3.5 border border-editorial-navy/15">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold uppercase text-red-700">2. Tracking (Espaciado uniforme en toda la palabra)</span>
+                  <span id="diagram-tracking-badge" class="text-xs font-mono text-editorial-navy font-semibold">+40 / 1000 em</span>
+                </div>
+                <div class="flex flex-col items-center justify-center py-2">
+                  <div class="inline-block">
+                    <div id="diagram-tracking-word" class="text-3xl sm:text-4xl font-bold text-editorial-navy transition-all duration-150" style="letter-spacing: 0.04em;">
+                      Every word
+                    </div>
+                    <!-- Regla roja inferior -->
+                    <div class="relative mt-1 h-3 flex items-center">
+                      <span class="w-[1.5px] h-3 bg-red-600"></span>
+                      <span class="flex-1 h-[1.5px] bg-red-600 relative">
+                        <span class="absolute left-0 -top-1 text-red-600 text-[10px]">◄</span>
+                        <span class="absolute right-0 -top-1 text-red-600 text-[10px]">►</span>
+                      </span>
+                      <span class="w-[1.5px] h-3 bg-red-600"></span>
+                    </div>
+                  </div>
+                  <span class="text-[11px] font-semibold text-red-700 mt-0.5">Afecta por igual a todos los caracteres</span>
+                </div>
+              </div>
+
+              <!-- 3. INTERLINEADO -->
+              <div class="bg-white/70 rounded-lg p-3.5 border border-editorial-navy/15">
+                <div class="flex items-center justify-between mb-1">
+                  <span class="text-xs font-bold uppercase text-red-700">3. Interlineado / Leading (Distancia vertical)</span>
+                  <span id="diagram-leading-badge" class="text-xs font-mono text-editorial-navy font-semibold">34 pt</span>
+                </div>
+                <div class="flex flex-col items-center justify-center py-1 select-none">
+                  <div class="text-2xl sm:text-3xl font-extrabold text-editorial-navy leading-none">Interlineado</div>
+                  <!-- Flecha vertical roja dinámica -->
+                  <div id="diagram-leading-gap" class="flex items-center gap-2 transition-all duration-150" style="height: 18px;">
+                    <div class="flex flex-col items-center justify-between h-full text-red-600 font-bold text-[10px] leading-none">
+                      <span>▲</span>
+                      <span class="w-[1.5px] flex-1 bg-red-600"></span>
+                      <span>▼</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-red-700">Interlineado</span>
+                  </div>
+                  <div class="text-2xl sm:text-3xl font-extrabold text-editorial-navy leading-none">Interlineado</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-gray-600 mt-3 pt-2 border-t border-editorial-navy/15">
+            💡 <strong>Tip Docente:</strong> Mueve los deslizadores de <em>Tamaño, Interlineado, Kerning</em> y <em>Tracking</em> en el Panel Carácter de la izquierda para ver cómo reaccionan las mediciones rojas en tiempo real.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 3: TIPOS DE IDENTIDAD VISUAL                                 -->
+    <!-- ===================================================================== -->
+    <section id="section-3" class="hidden space-y-6">
+      <!-- Encabezado del Módulo -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-ai-orange">Apartado 03 • Arquitectura de Marca</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">Tipos de Identidad Visual: Logotipo, Isotipo, Imagotipo e Isologo</h2>
+          <p class="text-sm text-ai-muted mt-1">Pulsa el botón <strong>"Probar separación"</strong> en cada tarjeta para comprobar si el texto y el símbolo gráfico pueden funcionar de manera independiente o son indivisibles.</p>
+        </div>
+        <button onclick="switchTab(4)" class="self-start md:self-center px-4 py-2 bg-ai-orange hover:bg-amber-400 text-black text-xs font-bold rounded-lg shadow transition">
+          Ir a Evaluación Final →
+        </button>
+      </div>
+
+      <!-- Cuadrícula Comparativa 2x2 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 1. LOGOTIPO -->
+        <div class="bg-white text-editorial-navy rounded-2xl border-2 border-ai-border overflow-hidden shadow-lg flex flex-col justify-between">
+          <div>
+            <!-- Lienzo Vectorial Superior -->
+            <div class="bg-editorial-cream/60 border-b border-gray-200 p-6 flex flex-col items-center justify-center min-h-[190px] relative">
+              <span class="absolute bottom-3 right-3 bg-editorial-navy text-white text-xs font-bold px-3 py-1 rounded">Logotipo</span>
+              <!-- Gráfico SVG estilo Logowark -->
+              <svg viewBox="0 0 320 90" class="w-64 h-auto">
+                <text x="160" y="54" text-anchor="middle" fill="#0F1E36" font-family="Montserrat, sans-serif" font-weight="800" font-size="38" letter-spacing="-1">Logowark</text>
+                <!-- Detalle tipográfico personalizado en la g -->
+                <path d="M123 64 Q130 72 138 65" fill="none" stroke="#FF9A00" stroke-width="3.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <!-- Descripción y Ejemplos -->
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-extrabold text-editorial-navy">1. Logotipo</h3>
+                <span class="text-xs font-mono bg-blue-100 text-editorial-navy px-2.5 py-0.5 rounded-full font-semibold">100% Tipografía</span>
+              </div>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Identidad verbal representada <strong>únicamente mediante tipografía</strong> (fuente modificada o <em>lettering</em>). No incluye ningún icono ni símbolo separado.
+              </p>
+              <div class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Ejemplos reales reconocidos:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Coca-Cola</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Google</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Sony</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Zara</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Visa</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acción Interactiva -->
+          <div class="px-5 pb-5">
+            <button onclick="testBrandSeparation('logo')" class="w-full py-2.5 px-4 bg-editorial-navy hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-2">
+              <span>🔍 Probar separación</span>
+            </button>
+            <div id="feedback-logo" class="hidden mt-3 p-3 rounded-lg bg-amber-50 border border-amber-300 text-xs text-amber-950">
+              ℹ️ <strong>Sin icono independiente:</strong> El logotipo está compuesto exclusivamente por caracteres tipográficos vectorizados. No existe un símbolo gráfico que separar.
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. ISOTIPO (Con Sub-pestañas: Monograma, Anagrama, Pictograma) -->
+        <div class="bg-white text-editorial-navy rounded-2xl border-2 border-ai-border overflow-hidden shadow-lg flex flex-col justify-between">
+          <div>
+            <!-- Lienzo Vectorial Superior con Sub-pestañas -->
+            <div class="bg-editorial-cream/60 border-b border-gray-200 p-4 flex flex-col items-center justify-between min-h-[190px] relative">
+              <!-- Selector de Subtipos de Isotipo -->
+              <div class="flex flex-wrap justify-center gap-1 bg-white/90 p-1 rounded-lg border border-gray-200 z-10">
+                <button onclick="setIsotipoSubtype('base')" id="iso-sub-base" class="iso-sub-btn px-2.5 py-1 text-[11px] font-bold rounded bg-editorial-navy text-white">Pictograma Ave</button>
+                <button onclick="setIsotipoSubtype('monograma')" id="iso-sub-monograma" class="iso-sub-btn px-2.5 py-1 text-[11px] font-semibold rounded text-gray-600 hover:text-editorial-navy">Monograma</button>
+                <button onclick="setIsotipoSubtype('anagrama')" id="iso-sub-anagrama" class="iso-sub-btn px-2.5 py-1 text-[11px] font-semibold rounded text-gray-600 hover:text-editorial-navy">Anagrama</button>
+                <button onclick="setIsotipoSubtype('pictograma')" id="iso-sub-pictograma" class="iso-sub-btn px-2.5 py-1 text-[11px] font-semibold rounded text-gray-600 hover:text-editorial-navy">Pictograma Diana</button>
+              </div>
+
+              <!-- Contenedor dinámico del SVG de Isotipo -->
+              <div id="isotipo-svg-stage" class="my-2 flex items-center justify-center">
+                <!-- Ave geométrica estilo origami por defecto -->
+                <svg viewBox="0 0 180 120" class="w-40 h-28">
+                  <polygon points="35,20 95,42 72,62" fill="#0F1E36"/>
+                  <polygon points="95,42 128,28 112,72 72,62" fill="#162B4D"/>
+                  <polygon points="128,28 145,38 125,44" fill="#FF9A00"/>
+                  <polygon points="72,62 96,68 62,102" fill="#0F1E36"/>
+                </svg>
+              </div>
+
+              <span id="isotipo-badge-label" class="absolute bottom-3 right-3 bg-editorial-navy text-white text-xs font-bold px-3 py-1 rounded">Isotipo</span>
+            </div>
+
+            <!-- Descripción y Ejemplos -->
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-extrabold text-editorial-navy">2. Isotipo</h3>
+                <span class="text-xs font-mono bg-blue-100 text-editorial-navy px-2.5 py-0.5 rounded-full font-semibold">100% Símbolo</span>
+              </div>
+              <p id="isotipo-desc-text" class="text-sm text-gray-700 leading-relaxed">
+                Representación simbólica de la marca <strong>sin ningún texto</strong>. Se divide en <em>Monograma</em> (iniciales entrelazadas), <em>Anagrama</em> (contracción de sílabas) y <em>Pictograma</em> (síntesis visual).
+              </p>
+              <div class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Ejemplos reales reconocidos:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Apple (Pictograma)</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Nike (Swoosh)</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Louis Vuitton (Monograma)</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">FedEx (Anagrama)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acción Interactiva -->
+          <div class="px-5 pb-5">
+            <button onclick="testBrandSeparation('iso')" class="w-full py-2.5 px-4 bg-editorial-navy hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-2">
+              <span>🔍 Probar separación</span>
+            </button>
+            <div id="feedback-iso" class="hidden mt-3 p-3 rounded-lg bg-blue-50 border border-blue-300 text-xs text-editorial-navy">
+              ℹ️ <strong>Símbolo autónomo:</strong> El isotipo prescinde por completo del nombre escrito. Requiere alto posicionamiento para ser reconocido por sí solo.
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. IMAGOTIPO -->
+        <div class="bg-white text-editorial-navy rounded-2xl border-2 border-ai-border overflow-hidden shadow-lg flex flex-col justify-between">
+          <div>
+            <!-- Lienzo Vectorial Superior con Animación de Separación -->
+            <div id="imagotipo-canvas" class="bg-editorial-cream/60 border-b border-gray-200 p-6 flex items-center justify-center min-h-[190px] relative overflow-hidden">
+              <span class="absolute bottom-3 right-3 bg-editorial-navy text-white text-xs font-bold px-3 py-1 rounded">Imagotipo</span>
+
+              <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- Icono Montañas Vectorial -->
+                <div class="imago-icon p-2.5 rounded-xl border-2 border-dashed border-transparent" id="imago-icon-box">
+                  <svg viewBox="0 0 120 80" class="w-24 h-16">
+                    <!-- Montaña izquierda -->
+                    <polygon points="10,72 34,26 58,72" fill="#0F1E36"/>
+                    <polygon points="34,26 26,41 32,39 36,43 42,41" fill="#FFFFFF"/>
+                    <!-- Montaña central alta -->
+                    <polygon points="34,72 64,12 94,72" fill="#0F1E36" stroke="#F5F3EE" stroke-width="2"/>
+                    <polygon points="64,12 52,35 59,32 65,38 71,32 76,35" fill="#FFFFFF"/>
+                    <!-- Montaña derecha -->
+                    <polygon points="72,72 92,34 112,72" fill="#1E3A66"/>
+                  </svg>
+                </div>
+
+                <!-- Texto de Marca -->
+                <div class="imago-text px-3 py-2 rounded-xl border-2 border-dashed border-transparent" id="imago-text-box">
+                  <span class="font-sansGeo font-extrabold text-2xl sm:text-3xl tracking-tight text-editorial-navy">Imagotipo</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Descripción y Ejemplos -->
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-extrabold text-editorial-navy">3. Imagotipo</h3>
+                <span class="text-xs font-mono bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full font-semibold">Separable ✓</span>
+              </div>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Combinación de <strong>icono + texto</strong> agrupados visualmente, pero <strong>funcionan perfectamente por separado</strong> según las necesidades de formato (ej. foto de perfil vs. cabecera).
+              </p>
+              <div class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Ejemplos reales reconocidos:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Spotify</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Adidas</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Lacoste</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Puma</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Carrefour</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acción Interactiva -->
+          <div class="px-5 pb-5">
+            <button onclick="toggleImagotipoSeparation()" id="btn-imago-separate" class="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-2">
+              <span>✂️ Probar separación (Animar)</span>
+            </button>
+            <div id="feedback-imago" class="hidden mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-300 text-xs text-emerald-950">
+              ✅ <strong>¡Separación exitosa!</strong> Tanto el icono de las montañas como la tipografía conservan su legibilidad e identidad de manera independiente.
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. ISOLOGO -->
+        <div class="bg-white text-editorial-navy rounded-2xl border-2 border-ai-border overflow-hidden shadow-lg flex flex-col justify-between">
+          <div>
+            <!-- Lienzo Vectorial Superior -->
+            <div class="bg-editorial-cream/60 border-b border-gray-200 p-6 flex items-center justify-center min-h-[190px] relative">
+              <span class="absolute bottom-3 right-3 bg-editorial-navy text-white text-xs font-bold px-3 py-1 rounded">Isologo</span>
+
+              <!-- Escudo Emblema Indivisible -->
+              <div id="isologo-emblem-box">
+                <svg viewBox="0 0 160 150" class="w-36 h-32">
+                  <!-- Escudo exterior -->
+                  <path d="M80 12 L136 30 V74 C136 110 80 138 80 138 C80 138 24 110 24 74 V30 Z" fill="#0F1E36"/>
+                  <!-- Filete interior blanco -->
+                  <path d="M80 19 L129 35 V73 C129 104 80 130 80 130 C80 130 31 104 31 73 V35 Z" fill="none" stroke="#FFFFFF" stroke-width="3.5"/>
+                  <!-- Banda central blanca para el texto fundido -->
+                  <rect x="33" y="56" width="94" height="32" fill="#FFFFFF"/>
+                  <text x="80" y="79" text-anchor="middle" fill="#0F1E36" font-family="Montserrat, sans-serif" font-weight="800" font-size="22">Logoo</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Descripción y Ejemplos -->
+            <div class="p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-lg font-extrabold text-editorial-navy">4. Isologo</h3>
+                <span class="text-xs font-mono bg-red-100 text-red-900 px-2.5 py-0.5 rounded-full font-semibold">Indivisible 🔒</span>
+              </div>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Combinación de <strong>icono + texto fundidos</strong> en una sola unidad gráfica. Son <strong>indivisibles</strong>: si separas el texto del contenedor, el diseño pierde su estructura.
+              </p>
+              <div class="mt-3 pt-3 border-t border-gray-100">
+                <span class="text-xs font-bold uppercase text-gray-500 block mb-1.5">Ejemplos reales reconocidos:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Burger King</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Starbucks</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">BMW</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Ford</span>
+                  <span class="px-2.5 py-1 bg-gray-100 text-editorial-navy text-xs font-semibold rounded-md">Harley-Davidson</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acción Interactiva -->
+          <div class="px-5 pb-5">
+            <button onclick="testIsologoSeparation()" class="w-full py-2.5 px-4 bg-red-700 hover:bg-red-800 text-white text-xs font-bold rounded-xl transition flex items-center justify-center gap-2">
+              <span>🔒 Probar separación</span>
+            </button>
+            <div id="feedback-isologo" class="hidden mt-3 p-3 rounded-lg bg-red-50 border border-red-300 text-xs text-red-950">
+              ⚠️ <strong>¡No se puede separar!</strong> En un isologo el texto está integrado estructuralmente dentro del emblema o escudo; separarlos destruiría la identidad visual.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- APARTADO 4: EVALUACIÓN FINAL INTERACTIVA (12 PREGUNTAS, NOTA >= 7/10) -->
+    <!-- ===================================================================== -->
+    <section id="section-4" class="hidden space-y-6">
+      <!-- Encabezado del Módulo -->
+      <div class="bg-ai-panel border border-ai-border rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-wider text-ai-orange">Apartado 04 • Comprobación de Aprendizaje</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-white mt-0.5">Evaluación Final Interactiva</h2>
+          <p class="text-sm text-ai-muted mt-1">Responde las <strong>12 preguntas</strong> (4 por cada apartado). Necesitas una calificación mínima de <strong class="text-ai-orange">7.0 / 10</strong> para aprobar y obtener tu constancia.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label for="student-name-input" class="text-xs text-ai-muted whitespace-nowrap">Nombre del alumno:</label>
+          <input type="text" id="student-name-input" placeholder="Escribe tu nombre completo..." class="ai-input w-52 sm:w-64">
+        </div>
+      </div>
+
+      <!-- Contenedor Activo del Cuestionario -->
+      <div id="quiz-active-container" class="bg-ai-panel border border-ai-border rounded-xl p-5 sm:p-7 shadow-lg max-w-4xl mx-auto">
+        <!-- Barra de progreso interna del quiz -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-ai-border">
+          <div class="flex items-center gap-2">
+            <span id="quiz-q-counter" class="px-3 py-1 bg-ai-orange text-black font-bold text-xs rounded-full">Pregunta 1 de 12</span>
+            <span id="quiz-q-module" class="text-xs font-mono text-ai-muted bg-ai-bg px-2.5 py-1 rounded border border-ai-border">Apartado 1: Herramienta Texto</span>
+          </div>
+          <span id="quiz-live-score" class="text-xs font-mono text-gray-300">Aciertos actuales: 0</span>
+        </div>
+
+        <!-- Mini-diagrama SVG opcional según la pregunta -->
+        <div id="quiz-visual-aid" class="hidden mb-5 bg-editorial-cream text-editorial-navy rounded-xl p-4 border border-ai-border flex items-center justify-center">
+        </div>
+
+        <!-- Enunciado de la pregunta -->
+        <h3 id="quiz-question-text" class="text-base sm:text-lg font-bold text-white mb-5 leading-snug">
+          Cargando pregunta...
+        </h3>
+
+        <!-- Opciones de respuesta -->
+        <div id="quiz-options-list" class="space-y-3">
+          <!-- Generadas dinámicamente -->
+        </div>
+
+        <!-- Retroalimentación inmediata -->
+        <div id="quiz-feedback-box" class="hidden mt-5 p-4 rounded-xl border text-sm leading-relaxed">
+        </div>
+
+        <!-- Botón Siguiente -->
+        <div class="mt-6 flex justify-end">
+          <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-2.5 bg-ai-orange hover:bg-amber-400 text-black font-bold text-sm rounded-xl shadow transition">
+            Siguiente Pregunta →
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor de Resultados Finales (Oculto hasta terminar las 12 preguntas) -->
+      <div id="quiz-results-container" class="hidden max-w-4xl mx-auto space-y-6">
+        <!-- Tarjeta Principal de Calificación y Estado Emocional -->
+        <div id="result-status-card" class="bg-ai-panel border-2 rounded-2xl p-6 sm:p-8 text-center shadow-xl">
+          <!-- Iconos grandes según calificación (🤩🏆, 😊👍, 😕📚) -->
+          <div id="result-emoji-icons" class="text-5xl sm:text-6xl mb-3 select-none">😊 👍</div>
+
+          <span id="result-badge-pill" class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+            Estado
+          </span>
+
+          <h3 id="result-headline" class="text-2xl sm:text-3xl font-extrabold text-white">
+            Calificación Final: 8.3 / 10
+          </h3>
+
+          <p id="result-submessage" class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto mt-2 leading-relaxed">
+            Mensaje de retroalimentación...
+          </p>
+
+          <!-- Desglose por Apartado -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 text-left">
+            <div class="bg-ai-bg border border-ai-border rounded-xl p-3.5">
+              <span class="text-[11px] font-mono text-ai-muted block">Apartado 1</span>
+              <span class="text-xs font-bold text-white block">Texto y Párrafo</span>
+              <span id="breakdown-mod-1" class="text-lg font-extrabold text-ai-orange mt-1 block">0 / 4 aciertos</span>
+            </div>
+            <div class="bg-ai-bg border border-ai-border rounded-xl p-3.5">
+              <span class="text-[11px] font-mono text-ai-muted block">Apartado 2</span>
+              <span class="text-xs font-bold text-white block">Tipografía y Carácter</span>
+              <span id="breakdown-mod-2" class="text-lg font-extrabold text-ai-orange mt-1 block">0 / 4 aciertos</span>
+            </div>
+            <div class="bg-ai-bg border border-ai-border rounded-xl p-3.5">
+              <span class="text-[11px] font-mono text-ai-muted block">Apartado 3</span>
+              <span class="text-xs font-bold text-white block">Identidad Visual</span>
+              <span id="breakdown-mod-3" class="text-lg font-extrabold text-ai-orange mt-1 block">0 / 4 aciertos</span>
+            </div>
+          </div>
+
+          <!-- Diagnóstico de Repaso (si falló preguntas) -->
+          <div id="result-review-advice" class="hidden mt-5 p-4 rounded-xl bg-ai-bg/90 border border-ai-border text-left text-xs sm:text-sm text-gray-200">
+          </div>
+
+          <!-- Botones de Acción (Reintentar / Imprimir Constancia) -->
+          <div id="result-action-buttons" class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          </div>
+        </div>
+
+        <!-- CONSTANCIA DE APROBACIÓN (Solo visible si Nota >= 7.0 / 10) -->
+        <div id="certificate-printable" class="hidden bg-editorial-cream text-editorial-navy rounded-2xl border-4 border-double border-editorial-navy p-6 sm:p-10 shadow-2xl relative">
+          <div class="flex flex-col sm:flex-row items-center justify-between border-b-2 border-editorial-navy/20 pb-4 mb-6 gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-[#330000] border-2 border-ai-orange flex items-center justify-center">
+                <span class="text-ai-orange font-extrabold text-lg">Ai</span>
+              </div>
+              <div class="text-left">
+                <span class="text-[11px] uppercase tracking-widest font-bold text-gray-500 block">Taller Interactivo de Diseño Vectorial</span>
+                <span class="text-sm font-extrabold text-editorial-navy">Adobe Illustrator CC • Tipografía e Identidad</span>
+              </div>
+            </div>
+            <span id="cert-score-stamp" class="px-4 py-1.5 bg-editorial-navy text-white font-mono text-sm font-bold rounded-lg">
+              Nota: 10.0 / 10
+            </span>
+          </div>
+
+          <div class="text-center space-y-3 my-6">
+            <p class="text-xs uppercase tracking-[0.25em] font-bold text-gray-600">Constancia de Aprobación Académica</p>
+            <p class="text-sm text-gray-700">Se otorga el presente reconocimiento a:</p>
+            <h4 id="cert-student-name" class="text-2xl sm:text-3xl font-serifDisplay font-bold text-editorial-navy border-b border-editorial-navy/30 inline-block px-8 pb-1">
+              Estudiante de Diseño Gráfico
+            </h4>
+            <p class="text-xs sm:text-sm text-gray-700 max-w-xl mx-auto pt-2 leading-relaxed">
+              Por haber completado y aprobado satisfactoriamente el taller práctico sobre <strong>Herramienta Texto, Paneles Párrafo y Carácter, Microtipografía y Clasificación de Identidad Visual</strong> en Adobe Illustrator.
+            </p>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-editorial-navy/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div class="text-center sm:text-left">
+              <span id="cert-date" class="text-gray-600 font-mono block">Fecha de emisión</span>
+              <span class="text-[11px] text-gray-500">Validación digital interactiva</span>
+            </div>
+            <div class="text-center">
+              <div class="w-48 border-b border-editorial-navy mb-1 mx-auto"></div>
+              <span class="font-bold text-sm text-editorial-navy block">Lic. Paul Zavala — Docente</span>
+              <span class="text-[11px] text-gray-600">Cátedra de Diseño Gráfico Digital</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA (FOOTER) CON IDENTIDAD VISUAL Y AUTORÍA DOCENTE -->
+  <footer class="bg-ai-panel border-t border-ai-border mt-10 py-4 px-4 no-print">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-ai-muted">
+      <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 rounded bg-[#330000] border border-ai-orange text-ai-orange font-bold text-[10px]">Ai</span>
+        <span>Recurso Didáctico Interactivo • Tipografía, Herramienta Texto e Identidad Visual</span>
+      </div>
+      <div class="font-semibold text-white">
+        Lic. Paul Zavala — Docente
+      </div>
+    </div>
+  </footer>
+
+  <!-- LÓGICA JAVASCRIPT COMPLETA -->
+  <script>
+    /* =========================================================================
+       1. ESTADO GLOBAL Y NAVEGACIÓN ENTRE APARTADOS
+       ========================================================================= */
+    const visitedTabs = new Set([1]);
+
+    function switchTab(tabNumber) {
+      visitedTabs.add(tabNumber);
+
+      // Ocultar todas las secciones y desactivar botones
+      for (let i = 1; i <= 4; i++) {
+        const sec = document.getElementById(`section-${i}`);
+        const btn = document.getElementById(`tab-btn-${i}`);
+        const check = document.getElementById(`check-tab-${i}`);
+
+        if (i === tabNumber) {
+          sec.classList.remove('hidden');
+          btn.classList.add('bg-ai-bg', 'text-ai-orange', 'border-ai-border', 'font-semibold');
+          btn.classList.remove('border-transparent', 'text-ai-muted', 'font-medium');
+          btn.querySelector('span:first-child').classList.add('bg-ai-orange', 'text-black');
+          btn.querySelector('span:first-child').classList.remove('bg-ai-subpanel', 'text-white');
+        } else {
+          sec.classList.add('hidden');
+          btn.classList.remove('bg-ai-bg', 'text-ai-orange', 'border-ai-border', 'font-semibold');
+          btn.classList.add('border-transparent', 'text-ai-muted', 'font-medium');
+          btn.querySelector('span:first-child').classList.remove('bg-ai-orange', 'text-black');
+          btn.querySelector('span:first-child').classList.add('bg-ai-subpanel', 'text-white');
+        }
+
+        if (visitedTabs.has(i) && check) {
+          check.classList.remove('hidden');
+        }
+      }
+
+      // Actualizar barra de progreso superior
+      const progressPct = Math.round((visitedTabs.size / 4) * 100);
+      document.getElementById('global-progress-bar').style.width = `${progressPct}%`;
+      document.getElementById('progress-label').textContent = `Progreso: ${progressPct}%`;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================================
+       2. APARTADO 1: MENÚ DESPLEGABLE HERRAMIENTA TEXTO Y MESA DE TRABAJO
+       ========================================================================= */
+    const illustratorTextTools = [
+      {
+        id: 'point',
+        name: 'Herramienta Texto',
+        badge: 'T',
+        shortcut: 'T',
+        desc: 'Texto de punto (Point Type): Se activa con un solo clic en la mesa de trabajo. Crea una línea continua que no salta de renglón automáticamente. Ideal para logotipos y titulares. Nota: si se estira sin Shift, deforma la tipografía.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M5 4v3h5.5v13h3V7H19V4H5z"/></svg>`
+      },
+      {
+        id: 'area',
+        name: 'Herramienta Texto de área',
+        badge: 'T',
+        shortcut: 'Clic + Arrastrar',
+        desc: 'Texto de área (Area Type): Se dibuja arrastrando un contenedor vectorial cerrado. El texto refluye dentro de los límites de la caja sin deformar las letras al cambiar el ancho o alto del marco.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10M12 7v10" stroke-width="2"/></svg>`
+      },
+      {
+        id: 'path',
+        name: 'Herramienta Texto en trazado',
+        badge: 'T',
+        shortcut: 'Clic en trazado',
+        desc: 'Texto en trazado (Type on a Path): Permite que los caracteres sigan el contorno de cualquier vector abierto o cerrado (círculos, ondas, arcos). Muy usado en sellos, monedas e isologos.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17c4-6 14-6 18 0"/><path d="M8 6h8M12 6v6" stroke-width="2"/></svg>`
+      },
+      {
+        id: 'vertical',
+        name: 'Herramienta Texto vertical',
+        badge: '↓T',
+        shortcut: 'Menú Texto',
+        desc: 'Texto vertical: Apila los caracteres uno debajo del otro en dirección vertical manteniendo cada letra derecha. Útil para señalética, lomos de libros y composiciones orientales.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4v16M4 18l2 2 2-2"/><path d="M11 6h8M15 6v12" stroke-width="2"/></svg>`
+      },
+      {
+        id: 'area-vertical',
+        name: 'Herramienta Texto de área vertical',
+        badge: '↓T',
+        shortcut: 'Menú Texto',
+        desc: 'Texto de área vertical: Crea un contenedor vectorial donde las columnas de texto fluyen verticalmente de arriba hacia abajo y de derecha a izquierda.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7v10M13 7h4M15 7v10"/></svg>`
+      },
+      {
+        id: 'path-vertical',
+        name: 'Herramienta Texto vertical en trazado',
+        badge: '↓T',
+        shortcut: 'Menú Texto',
+        desc: 'Texto vertical en trazado: Orienta cada letra de forma perpendicular/apilada a lo largo de una curva Bézier o trazado circular.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 18c5-7 11-7 16 0"/><path d="M10 5h4M12 5v6"/></svg>`
+      },
+      {
+        id: 'touch-type',
+        name: 'Herramienta Retocar texto',
+        badge: 'T*',
+        shortcut: 'Mayús + T',
+        desc: 'Retocar texto (Touch Type Tool): Permite seleccionar, escalar, rotar y mover caracteres individuales dentro de una palabra SIN perder la capacidad de editar el texto.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" stroke-dasharray="2 2"/><path d="M8 8h8M12 8v9" stroke-width="2"/><circle cx="19" cy="5" r="2" fill="#FF9A00"/></svg>`
+      },
+      {
+        id: 'outlines',
+        name: 'Crear contornos (Vectorizar)',
+        badge: 'AQ',
+        shortcut: 'Ctrl/Cmd + Shift + O',
+        desc: 'Crear contornos (Create Outlines): Convierte la tipografía editable en formas vectoriales con nodos de ancla y manejadores Bézier. Indispensable para personalizar letras de logotipos y enviar a imprenta.',
+        iconSvg: `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#FF9A00" stroke-width="1.8"><path d="M6 19L12 5l6 14M8.5 14h7"/><rect x="10.5" y="3.5" width="3" height="3" fill="#1E1E1E"/></svg>`
+      }
+    ];
+
+    // Estado para la herramienta Retocar Texto (Mayús + T)
+    let selectedCharIdx = 2;
+    let touchTypeWord = 'DISEÑO';
+    let charTransforms = {};
+
+    function renderTextToolsMenu() {
+      const container = document.getElementById('text-tools-list');
+      container.innerHTML = illustratorTextTools.map((tool, index) => `
+        <button onclick="selectIllustratorTool('${tool.id}')" id="tool-btn-${tool.id}"
+          class="tool-item w-full px-4 py-2.5 flex items-center justify-between text-left hover:bg-ai-subpanel/70 transition ${index === 0 ? 'active' : 'text-gray-300'}">
+          <div class="flex items-center gap-3">
+            <span class="text-ai-orange shrink-0">${tool.iconSvg}</span>
+            <span class="text-xs sm:text-sm font-medium">${tool.name}</span>
+          </div>
+          <span class="text-[11px] font-mono text-ai-muted">${tool.shortcut}</span>
+        </button>
+      `).join('');
+
+      selectIllustratorTool('point');
+    }
+
+    function selectIllustratorTool(toolId) {
+      const tool = illustratorTextTools.find(t => t.id === toolId);
+      if (!tool) return;
+
+      // Actualizar estado activo en menú lateral
+      document.querySelectorAll('.tool-item').forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.add('text-gray-300');
+      });
+      const activeBtn = document.getElementById(`tool-btn-${toolId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-gray-300');
+      }
+
+      document.getElementById('active-tool-badge').textContent = tool.badge;
+      document.getElementById('active-tool-title').textContent = tool.name;
+      document.getElementById('active-tool-shortcut').textContent = `Atajo: ${tool.shortcut}`;
+      document.getElementById('active-tool-desc').textContent = tool.desc;
+
+      const canvas = document.getElementById('tool-canvas-area');
+
+      if (toolId === 'point') {
+        canvas.innerHTML = `
+          <div class="w-full max-w-md space-y-4">
+            <div class="bg-ai-panel/90 border border-ai-border rounded-xl p-6 flex flex-col items-center">
+              <div class="relative inline-flex items-center">
+                <!-- Punto de anclaje naranja típico de Illustrator -->
+                <span class="w-3.5 h-3.5 rounded-full bg-ai-orange border-2 border-white -mr-1.5 z-10 shadow" title="Punto de anclaje único"></span>
+                <div id="point-type-live" contenteditable="true" class="border-b-2 border-ai-orange px-3 py-1 text-2xl sm:text-3xl font-bold text-white focus:outline-none">
+                  Texto de Punto
+                </div>
+              </div>
+              <span class="text-[11px] text-ai-muted mt-3">Haz clic sobre el texto superior para editarlo directamente</span>
+            </div>
+            <div class="flex items-center justify-center gap-3">
+              <label class="text-xs text-ai-muted">Escala horizontal sin Shift:</label>
+              <input type="range" min="70" max="145" value="100" oninput="document.getElementById('point-type-live').style.transform = 'scaleX(' + (this.value/100) + ')'" class="accent-ai-orange">
+            </div>
+          </div>
+        `;
+      } else if (toolId === 'area') {
+        canvas.innerHTML = `
+          <div class="w-full max-w-md space-y-3">
+            <div class="flex items-center justify-between text-xs text-ai-muted">
+              <span>Ancho del contenedor:</span>
+              <input type="range" min="190" max="380" value="300" oninput="document.getElementById('area-box-frame').style.width = this.value + 'px'" class="accent-ai-orange">
+            </div>
+            <div id="area-box-frame" style="width: 300px;" class="mx-auto bg-ai-panel/90 border-2 border-ai-orange p-4 relative text-xs sm:text-sm text-gray-200 leading-relaxed transition-all">
+              <!-- Manejadores cuadrados -->
+              <span class="w-2 h-2 bg-ai-orange absolute -top-1 -left-1"></span>
+              <span class="w-2 h-2 bg-ai-orange absolute -top-1 left-1/2 -translate-x-1/2"></span>
+              <span class="w-2 h-2 bg-ai-orange absolute -top-1 -right-1"></span>
+              <span class="w-2 h-2 bg-ai-orange absolute -bottom-1 -left-1"></span>
+              <span class="w-2 h-2 bg-ai-orange absolute -bottom-1 left-1/2 -translate-x-1/2"></span>
+              <span class="w-2 h-2 bg-ai-orange absolute -bottom-1 -right-1"></span>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Al cambiar el ancho de la caja delimitadora, el párrafo refluye sin deformar las letras.
+            </div>
+          </div>
+        `;
+      } else if (toolId === 'path') {
+        canvas.innerHTML = `
+          <div class="flex flex-col items-center space-y-3">
+            <svg viewBox="0 0 240 240" class="w-56 h-56">
+              <defs>
+                <path id="circleTextPath" d="M 120, 120 m -78, 0 a 78,78 0 1,1 156,0 a 78,78 0 1,1 -156,0" />
+              </defs>
+              <circle cx="120" cy="120" r="78" fill="none" stroke="#FF9A00" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text fill="#FFFFFF" font-size="14.5" font-weight="700" letter-spacing="2.2">
+                <textPath id="svg-path-text-target" href="#circleTextPath" startOffset="4%">
+                  • TEXTO EN TRAZADO VECTORIAL •
+                </textPath>
+              </text>
+            </svg>
+            <input type="text" value="• TEXTO EN TRAZADO VECTORIAL •" maxlength="36"
+              oninput="document.getElementById('svg-path-text-target').textContent = this.value"
+              class="ai-input w-64 text-center text-xs">
+          </div>
+        `;
+      } else if (toolId === 'vertical') {
+        canvas.innerHTML = `
+          <div class="flex items-center gap-6 bg-ai-panel/90 border border-ai-border px-8 py-4 rounded-xl">
+            <div style="writing-mode: vertical-rl; text-orientation: upright;" class="text-2xl font-extrabold tracking-widest text-white border-r-2 border-ai-orange pr-2 select-none">
+              ILLUSTRATOR
+            </div>
+            <div class="text-xs text-ai-muted max-w-[190px] space-y-2">
+              <p class="text-white font-semibold">Flujo Vertical Directo</p>
+              <p>Cada glifo conserva su orientación vertical natural sin girar 90°.</p>
+            </div>
+          </div>
+        `;
+      } else if (toolId === 'area-vertical') {
+        canvas.innerHTML = `
+          <div class="bg-ai-panel/90 border-2 border-ai-orange p-4 relative rounded">
+            <div style="writing-mode: vertical-rl; text-orientation: upright; height: 190px;" class="text-xs sm:text-sm text-gray-200 leading-loose tracking-wider">
+              DISEÑO EDITORIAL • COLUMNAS VERTICALES • COMPOSICIÓN VECTORIAL EN CAJA DELIMITADORA
+            </div>
+          </div>
+        `;
+      } else if (toolId === 'path-vertical') {
+        canvas.innerHTML = `
+          <div class="flex flex-col items-center">
+            <svg viewBox="0 0 280 180" class="w-64 h-44">
+              <path id="archCurve" d="M 30,145 Q 140,25 250,145" fill="none" stroke="#FF9A00" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text fill="#FFFFFF" font-size="14" font-weight="700" letter-spacing="6">
+                <textPath href="#archCurve" startOffset="14%">V E R T I C A L</textPath>
+              </text>
+            </svg>
+            <span class="text-xs text-ai-muted">Caracteres orientados perpendicularmente sobre curva Bézier</span>
+          </div>
+        `;
+      } else if (toolId === 'touch-type') {
+        renderTouchTypeStage(canvas);
+      } else if (toolId === 'outlines') {
+        canvas.innerHTML = `
+          <div class="flex flex-col items-center space-y-3">
+            <!-- Ilustración SVG de letras AQ con nodos de ancla y manejadores Bézier -->
+            <svg viewBox="0 0 340 165" class="w-80 h-auto">
+              <!-- Letra A vectorizada -->
+              <path d="M55 135 L95 30 L113 30 L153 135 L135 135 L125 107 L83 107 L73 135 Z M88 92 L120 92 L104 48 Z"
+                fill="rgba(255,154,0,0.12)" stroke="#FF9A00" stroke-width="2"/>
+              <!-- Nodos cuadrados en A -->
+              <rect x="52" y="132" width="6" height="6" fill="#1E1E1E" stroke="#FF9A00" stroke-width="1.5"/>
+              <rect x="92" y="27" width="6" height="6" fill="#1E1E1E" stroke="#FF9A00" stroke-width="1.5"/>
+              <rect x="110" y="27" width="6" height="6" fill="#1E1E1E" stroke="#FF9A00" stroke-width="1.5"/>
+              <rect x="150" y="132" width="6" height="6" fill="#1E1E1E" stroke="#FF9A00" stroke-width="1.5"/>
+
+              <!-- Letra Q vectorizada con manejadores Bézier -->
+              <ellipse cx="235" cy="82" rx="46" ry="52" fill="rgba(255,154,0,0.12)" stroke="#FF9A00" stroke-width="2"/>
+              <ellipse cx="235" cy="82" rx="29" ry="36" fill="#252525" stroke="#FF9A00" stroke-width="2"/>
+              <polygon points="246,114 284,142 274,151 236,123" fill="rgba(255,154,0,0.2)" stroke="#FF9A00" stroke-width="2"/>
+
+              <!-- Manejadores Bézier arriba y abajo de Q -->
+              <line x1="205" y1="30" x2="265" y2="30" stroke="#FF9A00" stroke-width="1.2"/>
+              <circle cx="205" cy="30" r="3" fill="#FF9A00"/>
+              <circle cx="265" cy="30" r="3" fill="#FF9A00"/>
+              <rect x="232" y="27" width="6" height="6" fill="#FF9A00"/>
+
+              <line x1="189" y1="54" x2="189" y2="110" stroke="#FF9A00" stroke-width="1.2"/>
+              <circle cx="189" cy="54" r="3" fill="#FF9A00"/>
+              <circle cx="189" cy="110" r="3" fill="#FF9A00"/>
+              <rect x="186" y="79" width="6" height="6" fill="#FF9A00"/>
+            </svg>
+            <span class="text-xs font-mono text-ai-orange bg-ai-panel px-3 py-1 rounded border border-ai-border">
+              Texto convertido en trazados editables con Selección Directa (A)
+            </span>
+          </div>
+        `;
+      }
+    }
+
+    function renderTouchTypeStage(canvas) {
+      const lettersHtml = touchTypeWord.split('').map((ch, idx) => {
+        const t = charTransforms[idx] || { scale: 1, rotate: 0, shiftY: 0 };
+        const isSelected = idx === selectedCharIdx;
+        return `
+          <button onclick="selectTouchChar(${idx})"
+            style="transform: translateY(${t.shiftY}px) scale(${t.scale}) rotate(${t.rotate}deg);"
+            class="inline-block px-2 py-1 text-3xl sm:text-4xl font-extrabold rounded transition-all select-none ${isSelected ? 'border-2 border-ai-orange bg-ai-orange/20 text-white shadow-lg' : 'border border-transparent text-gray-200 hover:border-gray-500'}">
+            ${ch}
+          </button>
+        `;
+      }).join('');
+
+      const activeT = charTransforms[selectedCharIdx] || { scale: 1, rotate: 0, shiftY: 0 };
+
+      canvas.innerHTML = `
+        <div class="w-full max-w-md space-y-4">
+          <div class="bg-ai-panel/95 border border-ai-border rounded-xl p-6 flex items-center justify-center min-h-[110px]">
+            <div class="flex items-center gap-1">${lettersHtml}</div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5 bg-ai-panel p-3 rounded-lg border border-ai-border text-xs">
+            <div>
+              <label class="block text-[11px] text-ai-muted mb-1">Escala (${Math.round(activeT.scale * 100)}%)</label>
+              <input type="range" min="0.6" max="1.6" step="0.05" value="${activeT.scale}" oninput="updateTouchCharProp('scale', parseFloat(this.value))" class="w-full accent-ai-orange">
+            </div>
+            <div>
+              <label class="block text-[11px] text-ai-muted mb-1">Rotar (${activeT.rotate}°)</label>
+              <input type="range" min="-35" max="35" step="5" value="${activeT.rotate}" oninput="updateTouchCharProp('rotate', parseInt(this.value))" class="w-full accent-ai-orange">
+            </div>
+            <div>
+              <label class="block text-[11px] text-ai-muted mb-1">Altura (${activeT.shiftY}px)</label>
+              <input type="range" min="-20" max="20" step="2" value="${activeT.shiftY}" oninput="updateTouchCharProp('shiftY', parseInt(this.value))" class="w-full accent-ai-orange">
+            </div>
+          </div>
+          <p class="text-[11px] text-center text-ai-muted">Haz clic en cualquier letra individual para seleccionarla con su marco naranja y transformarla.</p>
+        </div>
+      `;
+    }
+
+    function selectTouchChar(idx) {
+      selectedCharIdx = idx;
+      renderTouchTypeStage(document.getElementById('tool-canvas-area'));
+    }
+
+    function updateTouchCharProp(prop, val) {
+      if (!charTransforms[selectedCharIdx]) {
+        charTransforms[selectedCharIdx] = { scale: 1, rotate: 0, shiftY: 0 };
+      }
+      charTransforms[selectedCharIdx][prop] = val;
+      renderTouchTypeStage(document.getElementById('tool-canvas-area'));
+    }
+
+    /* =========================================================================
+       3. APARTADO 1B: SIMULADOR DEL PANEL PÁRRAFO
+       ========================================================================= */
+    let currentParaAlign = 'left';
+
+    function setParaAlign(align) {
+      currentParaAlign = align;
+      document.querySelectorAll('.para-align-btn').forEach(btn => {
+        btn.classList.remove('bg-ai-orange', 'text-black', 'font-semibold');
+        btn.classList.add('bg-ai-input', 'text-gray-300');
+      });
+      const active = document.getElementById(`align-${align}`);
+      if (active) {
+        active.classList.add('bg-ai-orange', 'text-black', 'font-semibold');
+        active.classList.remove('bg-ai-input', 'text-gray-300');
+      }
+      updateParagraphPreview();
+    }
+
+    function updateParagraphPreview() {
+      const box = document.getElementById('paragraph-preview-box');
+      const p1 = document.getElementById('para-sample-1');
+      const p2 = document.getElementById('para-sample-2');
+
+      const indentL = document.getElementById('para-indent-left').value || 0;
+      const indentR = document.getElementById('para-indent-right').value || 0;
+      const indentFirst = document.getElementById('para-indent-first').value || 0;
+      const spaceBefore = document.getElementById('para-space-before').value || 0;
+      const spaceAfter = document.getElementById('para-space-after').value || 0;
+      const hyphenate = document.getElementById('para-hyphenate').checked;
+
+      box.style.textAlign = currentParaAlign;
+      box.style.paddingLeft = `${indentL}px`;
+      box.style.paddingRight = `${indentR}px`;
+      box.style.hyphens = hyphenate ? 'auto' : 'none';
+      box.style.webkitHyphens = hyphenate ? 'auto' : 'none';
+
+      [p1, p2].forEach(p => {
+        p.style.textIndent = `${indentFirst}px`;
+        p.style.marginTop = `${spaceBefore}px`;
+        p.style.marginBottom = `${spaceAfter}px`;
+      });
+    }
+
+    function resetParagraphPanel() {
+      document.getElementById('para-indent-left').value = 0;
+      document.getElementById('para-indent-right').value = 0;
+      document.getElementById('para-indent-first').value = 16;
+      document.getElementById('para-space-before').value = 0;
+      document.getElementById('para-space-after').value = 10;
+      document.getElementById('para-hyphenate').checked = true;
+      setParaAlign('left');
+    }
+
+    /* =========================================================================
+       4. APARTADO 2: CLASIFICACIÓN TIPOGRÁFICA Y PANEL CARÁCTER
+       ========================================================================= */
+    const charFlags = {
+      allCaps: false,
+      smallCaps: false,
+      underline: false,
+      strike: false
+    };
+
+    function updateFontSamples(text) {
+      const val = text.trim() || 'Marca Creativa';
+      document.querySelectorAll('.typo-sample-text').forEach(el => {
+        el.textContent = val;
+      });
+    }
+
+    function loadFontInCharacterPanel(fontStack) {
+      const select = document.getElementById('char-font-family');
+      select.value = fontStack;
+      updateCharacterPreview();
+    }
+
+    function toggleCharFlag(flag) {
+      charFlags[flag] = !charFlags[flag];
+      const btn = document.getElementById(`btn-${flag}`);
+      if (charFlags[flag]) {
+        btn.classList.add('bg-ai-orange', 'text-black');
+        btn.classList.remove('bg-ai-input', 'text-gray-300');
+      } else {
+        btn.classList.remove('bg-ai-orange', 'text-black');
+        btn.classList.add('bg-ai-input', 'text-gray-300');
+      }
+      updateCharacterPreview();
+    }
+
+    function updateCharacterPreview() {
+      const font = document.getElementById('char-font-family').value;
+      const styleVal = document.getElementById('char-font-style').value.split('-');
+      const size = parseInt(document.getElementById('char-size').value, 10);
+      const leading = parseInt(document.getElementById('char-leading').value, 10);
+      const kerning = parseInt(document.getElementById('char-kerning').value, 10);
+      const tracking = parseInt(document.getElementById('char-tracking').value, 10);
+      const scaleV = parseInt(document.getElementById('char-scale-v').value, 10) || 100;
+      const scaleH = parseInt(document.getElementById('char-scale-h').value, 10) || 100;
+      const baseline = parseInt(document.getElementById('char-baseline').value, 10) || 0;
+      const rotate = parseInt(document.getElementById('char-rotate').value, 10) || 0;
+
+      // Actualizar etiquetas numéricas
+      document.getElementById('val-char-size').textContent = `${size} pt`;
+      document.getElementById('val-char-leading').textContent = `${leading} pt`;
+      document.getElementById('val-char-kerning').textContent = kerning;
+      document.getElementById('val-char-tracking').textContent = tracking;
+
+      // Aplicar al lienzo del Panel Carácter
+      const out = document.getElementById('char-preview-output');
+      out.style.fontFamily = font;
+      out.style.fontStyle = styleVal[0];
+      out.style.fontWeight = styleVal[1];
+      out.style.fontSize = `${size}px`;
+      out.style.lineHeight = `${leading}px`;
+      out.style.letterSpacing = `${tracking / 1000}em`;
+      out.style.transform = `translateY(${-baseline}px) scale(${scaleH / 100}, ${scaleV / 100}) rotate(${rotate}deg)`;
+      out.style.textTransform = charFlags.allCaps ? 'uppercase' : 'none';
+      out.style.fontVariant = charFlags.smallCaps ? 'small-caps' : 'normal';
+
+      const decorations = [];
+      if (charFlags.underline) decorations.push('underline');
+      if (charFlags.strike) decorations.push('line-through');
+      out.style.textDecoration = decorations.length ? decorations.join(' ') : 'none';
+
+      // Kerning entre A y V en el texto de ejemplo
+      const pairV = document.getElementById('char-pair-v');
+      if (pairV) {
+        pairV.style.marginLeft = `${kerning / 12}px`;
+      }
+
+      // Sincronizar con la Lámina Editorial Técnica (Flechas Rojas)
+      document.getElementById('diagram-kerning-badge').textContent = `${kerning} / 1000 em`;
+      const gapWidth = Math.max(2, Math.min(34, 14 + kerning / 8));
+      document.getElementById('kerning-gap-box').style.width = `${gapWidth}px`;
+
+      document.getElementById('diagram-tracking-badge').textContent = `${tracking >= 0 ? '+' : ''}${tracking} / 1000 em`;
+      document.getElementById('diagram-tracking-word').style.letterSpacing = `${tracking / 1000}em`;
+
+      document.getElementById('diagram-leading-badge').textContent = `${leading} pt`;
+      const leadingGapPx = Math.max(8, Math.min(40, leading - 16));
+      document.getElementById('diagram-leading-gap').style.height = `${leadingGapPx}px`;
+    }
+
+    function resetCharacterPanel() {
+      document.getElementById('char-font-family').value = 'Montserrat, sans-serif';
+      document.getElementById('char-font-style').value = 'normal-700';
+      document.getElementById('char-size').value = 28;
+      document.getElementById('char-leading').value = 34;
+      document.getElementById('char-kerning').value = -40;
+      document.getElementById('char-tracking').value = 40;
+      document.getElementById('char-scale-v').value = 100;
+      document.getElementById('char-scale-h').value = 100;
+      document.getElementById('char-baseline').value = 0;
+      document.getElementById('char-rotate').value = 0;
+
+      Object.keys(charFlags).forEach(k => {
+        charFlags[k] = false;
+        const btn = document.getElementById(`btn-${k}`);
+        btn.classList.remove('bg-ai-orange', 'text-black');
+        btn.classList.add('bg-ai-input', 'text-gray-300');
+      });
+
+      updateCharacterPreview();
+    }
+
+    /* =========================================================================
+       5. APARTADO 3: TIPOS DE IDENTIDAD VISUAL E INTERACCIÓN DE SEPARACIÓN
+       ========================================================================= */
+    function setIsotipoSubtype(subtype) {
+      document.querySelectorAll('.iso-sub-btn').forEach(btn => {
+        btn.classList.remove('bg-editorial-navy', 'text-white', 'font-bold');
+        btn.classList.add('text-gray-600', 'font-semibold');
+      });
+      const activeBtn = document.getElementById(`iso-sub-${subtype}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-editorial-navy', 'text-white', 'font-bold');
+        activeBtn.classList.remove('text-gray-600', 'font-semibold');
+      }
+
+      const stage = document.getElementById('isotipo-svg-stage');
+      const badge = document.getElementById('isotipo-badge-label');
+      const desc = document.getElementById('isotipo-desc-text');
+
+      if (subtype === 'base') {
+        badge.textContent = 'Isotipo';
+        desc.innerHTML = 'Representación simbólica de la marca <strong>sin ningún texto</strong>. Se divide en <em>Monograma</em> (iniciales entrelazadas), <em>Anagrama</em> (contracción de sílabas) y <em>Pictograma</em> (síntesis visual).';
+        stage.innerHTML = `
+          <svg viewBox="0 0 180 120" class="w-40 h-28">
+            <polygon points="35,20 95,42 72,62" fill="#0F1E36"/>
+            <polygon points="95,42 128,28 112,72 72,62" fill="#162B4D"/>
+            <polygon points="128,28 145,38 125,44" fill="#FF9A00"/>
+            <polygon points="72,62 96,68 62,102" fill="#0F1E36"/>
+          </svg>
+        `;
+      } else if (subtype === 'monograma') {
+        badge.textContent = 'Monograma';
+        desc.innerHTML = '<strong>Subtipo Monograma:</strong> Unión o entrelazado artístico de dos o más iniciales de la marca para crear un símbolo distintivo (ej. <em>Louis Vuitton, Chanel, Yves Saint Laurent</em>).';
+        stage.innerHTML = `
+          <svg viewBox="0 0 160 120" class="w-40 h-28">
+            <circle cx="80" cy="60" r="46" fill="none" stroke="#0F1E36" stroke-width="2.5"/>
+            <text x="68" y="72" text-anchor="middle" fill="#0F1E36" font-family="Playfair Display, serif" font-weight="700" font-size="48">P</text>
+            <text x="92" y="82" text-anchor="middle" fill="#FF9A00" font-family="Playfair Display, serif" font-weight="700" font-size="48">Z</text>
+          </svg>
+        `;
+      } else if (subtype === 'anagrama') {
+        badge.textContent = 'Anagrama';
+        desc.innerHTML = '<strong>Subtipo Anagrama:</strong> Contracción de letras o sílabas de un nombre largo que forman una palabra breve y sonora con carga simbólica (ej. <em>FedEx</em> = Federal Express).';
+        stage.innerHTML = `
+          <svg viewBox="0 0 180 120" class="w-40 h-28">
+            <rect x="25" y="34" width="130" height="52" rx="8" fill="#0F1E36"/>
+            <text x="72" y="69" text-anchor="middle" fill="#FFFFFF" font-family="Montserrat, sans-serif" font-weight="800" font-size="26">Fed</text>
+            <text x="118" y="69" text-anchor="middle" fill="#FF9A00" font-family="Montserrat, sans-serif" font-weight="800" font-size="26">Ex</text>
+          </svg>
+        `;
+      } else if (subtype === 'pictograma') {
+        badge.textContent = 'Pictograma';
+        desc.innerHTML = '<strong>Subtipo Pictograma:</strong> Síntesis gráfica de un objeto, animal o figura geométrica reconocible al instante sin palabras (ej. <em>Apple, Target, Shell</em>).';
+        stage.innerHTML = `
+          <svg viewBox="0 0 160 120" class="w-40 h-28">
+            <circle cx="80" cy="60" r="44" fill="#0F1E36"/>
+            <circle cx="80" cy="60" r="28" fill="#F5F3EE"/>
+            <circle cx="80" cy="60" r="14" fill="#FF9A00"/>
+          </svg>
+        `;
+      }
+    }
+
+    function testBrandSeparation(type) {
+      const fb = document.getElementById(`feedback-${type}`);
+      if (fb) fb.classList.toggle('hidden');
+    }
+
+    let imagoIsSeparated = false;
+    function toggleImagotipoSeparation() {
+      imagoIsSeparated = !imagoIsSeparated;
+      const canvas = document.getElementById('imagotipo-canvas');
+      const iconBox = document.getElementById('imago-icon-box');
+      const textBox = document.getElementById('imago-text-box');
+      const btn = document.getElementById('btn-imago-separate');
+      const fb = document.getElementById('feedback-imago');
+
+      if (imagoIsSeparated) {
+        canvas.classList.add('imago-separated');
+        iconBox.classList.add('border-emerald-600', 'bg-white', 'shadow');
+        textBox.classList.add('border-emerald-600', 'bg-white', 'shadow');
+        btn.innerHTML = '<span>🔄 Reunir Imagotipo</span>';
+        fb.classList.remove('hidden');
+      } else {
+        canvas.classList.remove('imago-separated');
+        iconBox.classList.remove('border-emerald-600', 'bg-white', 'shadow');
+        textBox.classList.remove('border-emerald-600', 'bg-white', 'shadow');
+        btn.innerHTML = '<span>✂️ Probar separación (Animar)</span>';
+        fb.classList.add('hidden');
+      }
+    }
+
+    function testIsologoSeparation() {
+      const emblem = document.getElementById('isologo-emblem-box');
+      const fb = document.getElementById('feedback-isologo');
+      emblem.classList.remove('shake-lock');
+      void emblem.offsetWidth; // Reiniciar animación CSS
+      emblem.classList.add('shake-lock');
+      fb.classList.remove('hidden');
+    }
+
+    /* =========================================================================
+       6. APARTADO 4: BANCO DE 12 PREGUNTAS, EVALUACIÓN Y REINTENTO (< 7/10)
+       ========================================================================= */
+    const baseQuizQuestions = [
+      // APARTADO 1: Herramienta Texto y Párrafo (4 preguntas)
+      {
+        module: 1,
+        moduleName: 'Apartado 1: Texto y Párrafo',
+        question: '¿Qué herramienta de Illustrator (atajo Mayús + T) permite escalar, rotar y mover un carácter individual dentro de una palabra sin perder la capacidad de editar el texto?',
+        options: [
+          { text: 'Herramienta Retocar texto (Touch Type Tool)', isCorrect: true },
+          { text: 'Herramienta Texto de área vertical', isCorrect: false },
+          { text: 'Herramienta Pluma (P)', isCorrect: false },
+          { text: 'Herramienta Cuentagotas (I)', isCorrect: false }
+        ],
+        explanation: 'La Herramienta Retocar texto (Mayús + T) crea un cuadro manipulador alrededor de cada glifo individual manteniendo la tipografía completamente editable.'
+      },
+      {
+        module: 1,
+        moduleName: 'Apartado 1: Texto y Párrafo',
+        visualSvg: `
+          <svg viewBox="0 0 280 110" class="w-60 h-24">
+            <path d="M40 90 L70 20 L84 20 L114 90 L100 90 L93 71 L61 71 L54 90 Z" fill="rgba(255,154,0,0.2)" stroke="#0F1E36" stroke-width="2"/>
+            <rect x="37" y="87" width="6" height="6" fill="#FF9A00" stroke="#0F1E36"/>
+            <rect x="67" y="17" width="6" height="6" fill="#FF9A00" stroke="#0F1E36"/>
+            <ellipse cx="185" cy="55" rx="34" ry="36" fill="rgba(255,154,0,0.2)" stroke="#0F1E36" stroke-width="2"/>
+            <line x1="155" y1="19" x2="215" y2="19" stroke="#DC2626" stroke-width="1.5"/>
+            <circle cx="155" cy="19" r="3" fill="#DC2626"/>
+            <circle cx="215" cy="19" r="3" fill="#DC2626"/>
+          </svg>
+        `,
+        question: 'Observa el diagrama vectorial con nodos de ancla y manejadores Bézier sobre las letras. ¿Qué comando de Illustrator (Ctrl/Cmd + Shift + O) produce este resultado?',
+        options: [
+          { text: 'Crear contornos (Create Outlines)', isCorrect: true },
+          { text: 'Justificar última línea a la izquierda', isCorrect: false },
+          { text: 'Texto en trazado circular', isCorrect: false },
+          { text: 'Activar guiones automáticos', isCorrect: false }
+        ],
+        explanation: 'Crear contornos (Ctrl/Cmd + Shift + O) convierte los caracteres tipográficos en formas vectoriales con nodos editables para personalizar logotipos y evitar problemas de fuentes en imprenta.'
+      },
+      {
+        module: 1,
+        moduleName: 'Apartado 1: Texto y Párrafo',
+        question: '¿Cuál es la diferencia principal entre el Texto de Punto y el Texto de Área al redimensionar su caja delimitadora?',
+        options: [
+          { text: 'El Texto de Área refluye el texto dentro del marco sin deformarlo; el Texto de Punto estira las letras si no se usa Shift.', isCorrect: true },
+          { text: 'El Texto de Punto solo funciona en vertical y el Texto de Área solo en curvas.', isCorrect: false },
+          { text: 'El Texto de Área convierte automáticamente las letras en curvas Bézier.', isCorrect: false },
+          { text: 'No existe ninguna diferencia entre ambos métodos.', isCorrect: false }
+        ],
+        explanation: 'El Texto de Área actúa como un contenedor editorial donde el texto se redistribuye al cambiar el tamaño de la caja, mientras que el Texto de Punto escala directamente los glifos.'
+      },
+      {
+        module: 1,
+        moduleName: 'Apartado 1: Texto y Párrafo',
+        question: 'En el Panel Párrafo de Illustrator, ¿para qué sirve la casilla de verificación "Separar"?',
+        options: [
+          { text: 'Activa o desactiva la división silábica con guiones al final de las líneas de un párrafo.', isCorrect: true },
+          { text: 'Separa cada letra en una capa independiente.', isCorrect: false },
+          { text: 'Divide un isologo en icono y texto.', isCorrect: false },
+          { text: 'Aumenta el espacio vertical entre líneas de texto.', isCorrect: false }
+        ],
+        explanation: 'La opción "Separar" (Hyphenate) controla la partición de palabras mediante guiones al final de línea en bloques de texto justificados o alineados.'
+      },
+
+      // APARTADO 2: Tipografías y Panel Carácter (4 preguntas)
+      {
+        module: 2,
+        moduleName: 'Apartado 2: Tipografía y Carácter',
+        visualSvg: `
+          <div class="flex items-center gap-3 text-4xl font-extrabold text-editorial-navy">
+            <span>A</span>
+            <span class="inline-flex items-center justify-center w-6 h-10 border-x-2 border-red-600 text-red-600 text-sm font-bold">↔</span>
+            <span>V</span>
+          </div>
+        `,
+        question: 'Observa las flechas rojas ajustando exclusivamente el espacio óptico entre el par de letras "A" y "V". ¿Cómo se denomina este ajuste en el Panel Carácter?',
+        options: [
+          { text: 'Kerning (V/A)', isCorrect: true },
+          { text: 'Tracking (VA)', isCorrect: false },
+          { text: 'Interlineado (Leading)', isCorrect: false },
+          { text: 'Sangría de primera línea', isCorrect: false }
+        ],
+        explanation: 'El Kerning ajusta de manera puntual el espacio entre dos caracteres específicos (como A-V o A-T) para equilibrar huecos visuales.'
+      },
+      {
+        module: 2,
+        moduleName: 'Apartado 2: Tipografía y Carácter',
+        visualSvg: `
+          <div class="text-center">
+            <div class="text-2xl font-bold tracking-[0.25em] text-editorial-navy">DISEÑO</div>
+            <div class="text-red-600 font-bold text-xs mt-1">◄──────────────────►</div>
+          </div>
+        `,
+        question: '¿Qué parámetro del Panel Carácter modifica de forma uniforme el espaciado entre TODOS los caracteres de una palabra o bloque seleccionado?',
+        options: [
+          { text: 'Tracking (VA)', isCorrect: true },
+          { text: 'Kerning (V/A)', isCorrect: false },
+          { text: 'Desplazamiento vertical', isCorrect: false },
+          { text: 'Escala vertical (%)', isCorrect: false }
+        ],
+        explanation: 'El Tracking aplica un incremento o reducción uniforme del espacio entre todos los caracteres de la selección.'
+      },
+      {
+        module: 2,
+        moduleName: 'Apartado 2: Tipografía y Carácter',
+        question: '¿Qué familia tipográfica se caracteriza por poseer remates o patines en los extremos de sus astas y transmite tradición, autoridad y elegancia editorial?',
+        options: [
+          { text: 'Serif (ej. Garamond, Bodoni, Playfair Display)', isCorrect: true },
+          { text: 'Sans Serif (ej. Helvetica, Montserrat)', isCorrect: false },
+          { text: 'Script (ej. Pacifico, Brush Script)', isCorrect: false },
+          { text: 'Monoespaciada de código', isCorrect: false }
+        ],
+        explanation: 'Las fuentes Serif cuentan con pequeños remates terminales que guían la lectura horizontal y evocan formalidad y prestigio editorial.'
+      },
+      {
+        module: 2,
+        moduleName: 'Apartado 2: Tipografía y Carácter',
+        question: 'En el Panel Carácter (Ctrl/Cmd + T), ¿qué parámetro controla la distancia vertical medida en puntos (pt) entre una línea de texto y la siguiente?',
+        options: [
+          { text: 'Interlineado (Leading)', isCorrect: true },
+          { text: 'Rotación de caracteres (°)', isCorrect: false },
+          { text: 'Versalitas (Tt)', isCorrect: false },
+          { text: 'Sangría derecha', isCorrect: false }
+        ],
+        explanation: 'El Interlineado (Leading) determina la separación vertical entre líneas base consecutivas de un párrafo.'
+      },
+
+      // APARTADO 3: Tipos de Identidad Visual (4 preguntas)
+      {
+        module: 3,
+        moduleName: 'Apartado 3: Identidad Visual',
+        visualSvg: `
+          <svg viewBox="0 0 160 110" class="w-36 h-24">
+            <polygon points="30,18 85,38 64,56" fill="#0F1E36"/>
+            <polygon points="85,38 116,25 100,66 64,56" fill="#162B4D"/>
+            <polygon points="116,25 132,34 114,40" fill="#FF9A00"/>
+            <polygon points="64,56 86,62 55,94" fill="#0F1E36"/>
+          </svg>
+        `,
+        question: 'Observa esta identidad visual compuesta únicamente por un símbolo vectorial sin ningún texto acompañante (como Apple o Nike). ¿A qué categoría corresponde?',
+        options: [
+          { text: 'Isotipo', isCorrect: true },
+          { text: 'Logotipo', isCorrect: false },
+          { text: 'Isologo', isCorrect: false },
+          { text: 'Texto de área', isCorrect: false }
+        ],
+        explanation: 'El Isotipo es la representación simbólica de una marca prescindiendo por completo de texto.'
+      },
+      {
+        module: 3,
+        moduleName: 'Apartado 3: Identidad Visual',
+        visualSvg: `
+          <svg viewBox="0 0 140 120" class="w-32 h-28">
+            <path d="M70 10 L120 26 V64 C120 94 70 114 70 114 C70 114 20 94 20 64 V26 Z" fill="#0F1E36"/>
+            <rect x="28" y="46" width="84" height="26" fill="#FFFFFF"/>
+            <text x="70" y="64" text-anchor="middle" fill="#0F1E36" font-family="Montserrat, sans-serif" font-weight="800" font-size="18">MARCA</text>
+          </svg>
+        `,
+        question: 'En esta marca, el texto y el escudo gráfico están fundidos en una unidad indivisible (como Burger King o Starbucks). Si se separan, el diseño pierde su estructura. ¿Qué tipo de marca es?',
+        options: [
+          { text: 'Isologo', isCorrect: true },
+          { text: 'Imagotipo', isCorrect: false },
+          { text: 'Logotipo puro', isCorrect: false },
+          { text: 'Monograma suelto', isCorrect: false }
+        ],
+        explanation: 'En un Isologo, tipografía e icono forman una sola pieza gráfica inseparable.'
+      },
+      {
+        module: 3,
+        moduleName: 'Apartado 3: Identidad Visual',
+        question: 'Marcas como Spotify, Adidas o Lacoste combinan un icono y un texto agrupados, pero ambos elementos pueden separarse y funcionar de forma independiente. ¿Cómo se clasifica esta identidad?',
+        options: [
+          { text: 'Imagotipo', isCorrect: true },
+          { text: 'Isologo', isCorrect: false },
+          { text: 'Logotipo', isCorrect: false },
+          { text: 'Anagrama', isCorrect: false }
+        ],
+        explanation: 'El Imagotipo integra icono y texto de forma armoniosa permitiendo que cada elemento opere por separado según el soporte.'
+      },
+      {
+        module: 3,
+        moduleName: 'Apartado 3: Identidad Visual',
+        question: '¿Cómo se denomina el subtipo de isotipo que se construye entrelazando las iniciales de una marca (por ejemplo, Louis Vuitton o Chanel)?',
+        options: [
+          { text: 'Monograma', isCorrect: true },
+          { text: 'Pictograma', isCorrect: false },
+          { text: 'Interlineado', isCorrect: false },
+          { text: 'Texto en trazado', isCorrect: false }
+        ],
+        explanation: 'El Monograma es una variante del isotipo formada por la fusión o entrelazado gráfico de iniciales.'
+      }
+    ];
+
+    let activeQuizQuestions = [];
+    let currentQIndex = 0;
+    let totalCorrect = 0;
+    let moduleScores = { 1: 0, 2: 0, 3: 0 };
+    let questionAnswered = false;
+
+    // Algoritmo Fisher-Yates para barajar preguntas y opciones en cada intento
+    function shuffleArray(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function initQuiz() {
+      // Barajar orden de preguntas y barajar las opciones dentro de cada pregunta
+      activeQuizQuestions = shuffleArray(baseQuizQuestions).map(q => ({
+        ...q,
+        shuffledOptions: shuffleArray(q.options)
+      }));
+
+      currentQIndex = 0;
+      totalCorrect = 0;
+      moduleScores = { 1: 0, 2: 0, 3: 0 };
+      questionAnswered = false;
+
+      document.getElementById('quiz-active-container').classList.remove('hidden');
+      document.getElementById('quiz-results-container').classList.add('hidden');
+      document.getElementById('certificate-printable').classList.add('hidden');
+
+      renderCurrentQuestion();
+    }
+
+    function renderCurrentQuestion() {
+      questionAnswered = false;
+      const q = activeQuizQuestions[currentQIndex];
+
+      document.getElementById('quiz-q-counter').textContent = `Pregunta ${currentQIndex + 1} de ${activeQuizQuestions.length}`;
+      document.getElementById('quiz-q-module').textContent = q.moduleName;
+      document.getElementById('quiz-live-score').textContent = `Aciertos actuales: ${totalCorrect}`;
+      document.getElementById('quiz-question-text').textContent = q.question;
+
+      // Apoyo visual SVG si la pregunta lo incluye
+      const visualBox = document.getElementById('quiz-visual-aid');
+      if (q.visualSvg) {
+        visualBox.innerHTML = q.visualSvg;
+        visualBox.classList.remove('hidden');
+      } else {
+        visualBox.innerHTML = '';
+        visualBox.classList.add('hidden');
+      }
+
+      // Renderizar opciones
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsList = document.getElementById('quiz-options-list');
+      optionsList.innerHTML = q.shuffledOptions.map((opt, idx) => `
+        <button onclick="handleQuizAnswer(${idx})" id="quiz-opt-btn-${idx}"
+          class="quiz-opt-btn w-full text-left p-4 rounded-xl bg-ai-bg hover:bg-ai-subpanel border border-ai-border transition flex items-start gap-3.5 group">
+          <span class="w-7 h-7 rounded-lg bg-ai-subpanel group-hover:bg-ai-orange group-hover:text-black text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 transition">
+            ${letters[idx]}
+          </span>
+          <span class="text-sm text-gray-200 pt-0.5">${opt.text}</span>
+        </button>
+      `).join('');
+
+      const fbBox = document.getElementById('quiz-feedback-box');
+      fbBox.classList.add('hidden');
+      fbBox.innerHTML = '';
+
+      const nextBtn = document.getElementById('quiz-next-btn');
+      nextBtn.classList.add('hidden');
+      nextBtn.textContent = currentQIndex === activeQuizQuestions.length - 1 ? 'Ver Calificación Final →' : 'Siguiente Pregunta →';
+    }
+
+    function handleQuizAnswer(selectedIdx) {
+      if (questionAnswered) return;
+      questionAnswered = true;
+
+      const q = activeQuizQuestions[currentQIndex];
+      const chosenOpt = q.shuffledOptions[selectedIdx];
+      const isRight = chosenOpt.isCorrect;
+
+      if (isRight) {
+        totalCorrect++;
+        moduleScores[q.module]++;
+      }
+
+      document.getElementById('quiz-live-score').textContent = `Aciertos actuales: ${totalCorrect}`;
+
+      // Colorear botones de opción
+      q.shuffledOptions.forEach((opt, idx) => {
+        const btn = document.getElementById(`quiz-opt-btn-${idx}`);
+        btn.disabled = true;
+        btn.classList.remove('hover:bg-ai-subpanel');
+
+        if (opt.isCorrect) {
+          btn.classList.remove('bg-ai-bg', 'border-ai-border');
+          btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-white');
+          btn.querySelector('span:first-child').classList.add('bg-emerald-500', 'text-black');
+        } else if (idx === selectedIdx && !opt.isCorrect) {
+          btn.classList.remove('bg-ai-bg', 'border-ai-border');
+          btn.classList.add('bg-red-950/80', 'border-red-500', 'text-white');
+          btn.querySelector('span:first-child').classList.add('bg-red-500', 'text-white');
+        } else {
+          btn.classList.add('opacity-50');
+        }
+      });
+
+      // Mostrar explicación inmediata
+      const fbBox = document.getElementById('quiz-feedback-box');
+      fbBox.classList.remove('hidden', 'bg-emerald-950/60', 'border-emerald-500', 'text-emerald-200', 'bg-red-950/60', 'border-red-500', 'text-red-200');
+
+      if (isRight) {
+        fbBox.classList.add('bg-emerald-950/60', 'border-emerald-500', 'text-emerald-200');
+        fbBox.innerHTML = `<strong>✅ ¡Correcto!</strong> ${q.explanation}`;
+      } else {
+        fbBox.classList.add('bg-red-950/60', 'border-red-500', 'text-red-200');
+        fbBox.innerHTML = `<strong>❌ Incorrecto.</strong> ${q.explanation}`;
+      }
+
+      document.getElementById('quiz-next-btn').classList.remove('hidden');
+    }
+
+    function nextQuizQuestion() {
+      if (currentQIndex < activeQuizQuestions.length - 1) {
+        currentQIndex++;
+        renderCurrentQuestion();
+      } else {
+        showFinalResults();
+      }
+    }
+
+    function showFinalResults() {
+      document.getElementById('quiz-active-container').classList.add('hidden');
+      document.getElementById('quiz-results-container').classList.remove('hidden');
+
+      // Calcular nota sobre 10
+      const rawScore10 = (totalCorrect / activeQuizQuestions.length) * 10;
+      const score10 = Number(rawScore10.toFixed(1));
+
+      // Actualizar desglose por apartado
+      document.getElementById('breakdown-mod-1').textContent = `${moduleScores[1]} / 4 aciertos`;
+      document.getElementById('breakdown-mod-2').textContent = `${moduleScores[2]} / 4 aciertos`;
+      document.getElementById('breakdown-mod-3').textContent = `${moduleScores[3]} / 4 aciertos`;
+
+      const statusCard = document.getElementById('result-status-card');
+      const emojiIcons = document.getElementById('result-emoji-icons');
+      const badgePill = document.getElementById('result-badge-pill');
+      const headline = document.getElementById('result-headline');
+      const submessage = document.getElementById('result-submessage');
+      const reviewAdvice = document.getElementById('result-review-advice');
+      const actionButtons = document.getElementById('result-action-buttons');
+      const certificate = document.getElementById('certificate-printable');
+
+      // Limpiar clases de borde previas
+      statusCard.classList.remove('border-emerald-500', 'border-ai-blue', 'border-red-500');
+      badgePill.classList.remove('bg-emerald-500/20', 'text-emerald-300', 'bg-blue-500/20', 'text-blue-300', 'bg-red-500/20', 'text-red-300');
+
+      headline.textContent = `Calificación Final: ${score10.toFixed(1)} / 10 (${totalCorrect} de 12 aciertos)`;
+
+      // Detectar apartados débiles (< 3 aciertos de 4)
+      const weakModules = [];
+      if (moduleScores[1] < 3) weakModules.push('Apartado 1 (Herramienta Texto y Panel Párrafo)');
+      if (moduleScores[2] < 3) weakModules.push('Apartado 2 (Tipografías, Fuentes y Panel Carácter)');
+      if (moduleScores[3] < 3) weakModules.push('Apartado 3 (Tipos de Identidad Visual)');
+
+      if (score10 >= 9.0) {
+        // RANGO 9.0 - 10.0: EXCELENTE (🤩 🏆)
+        statusCard.classList.add('border-emerald-500');
+        emojiIcons.textContent = '🤩 🏆';
+        badgePill.classList.add('bg-emerald-500/20', 'text-emerald-300');
+        badgePill.textContent = '¡Excelente • Dominio Total!';
+        submessage.textContent = '¡Felicitaciones! Demuestras un dominio sobresaliente de la Herramienta Texto, los ajustes microtipográficos y la clasificación de marcas en Adobe Illustrator.';
+
+        if (weakModules.length > 0) {
+          reviewAdvice.classList.remove('hidden');
+          reviewAdvice.innerHTML = `💡 <strong>Detalle para la perfección:</strong> Puedes dar un vistazo rápido a ${weakModules.join(' y ')}.`;
+        } else {
+          reviewAdvice.classList.add('hidden');
+        }
+
+        unlockCertificate(score10);
+        actionButtons.innerHTML = `
+          <button onclick="window.print()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm rounded-xl shadow transition">
+            🖨️ Imprimir / Guardar Constancia PDF
+          </button>
+          <button onclick="initQuiz()" class="px-5 py-2.5 bg-ai-subpanel hover:bg-ai-border text-white font-semibold text-sm rounded-xl border border-ai-border transition">
+            🔄 Hacer Evaluación Nuevamente
+          </button>
+        `;
+
+      } else if (score10 >= 7.0) {
+        // RANGO 7.0 - 8.9: APROBADO (😊 👍)
+        statusCard.classList.add('border-ai-blue');
+        emojiIcons.textContent = '😊 👍';
+        badgePill.classList.add('bg-blue-500/20', 'text-blue-300');
+        badgePill.textContent = '¡Aprobado • Buen Desempeño!';
+        submessage.textContent = 'Has superado satisfactoriamente la evaluación mínima de 7.0 / 10. Tu Constancia de Aprobación está habilitada abajo.';
+
+        if (weakModules.length > 0) {
+          reviewAdvice.classList.remove('hidden');
+          reviewAdvice.innerHTML = `📌 <strong>Recomendación del docente:</strong> Para alcanzar la excelencia, te sugerimos reforzar los conceptos de: <strong>${weakModules.join(', ')}</strong>.`;
+        } else {
+          reviewAdvice.classList.add('hidden');
+        }
+
+        unlockCertificate(score10);
+        actionButtons.innerHTML = `
+          <button onclick="window.print()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm rounded-xl shadow transition">
+            🖨️ Imprimir / Guardar Constancia PDF
+          </button>
+          <button onclick="initQuiz()" class="px-5 py-2.5 bg-ai-subpanel hover:bg-ai-orange hover:text-black text-white font-semibold text-sm rounded-xl border border-ai-border transition">
+            🔄 Reintentar para subir calificación
+          </button>
+        `;
+
+      } else {
+        // MENOS DE 7.0 / 10: NO APROBADO -> BLOQUEA CONSTANCIA Y PERMITE HACER NUEVAMENTE (😕 📚)
+        statusCard.classList.add('border-red-500');
+        emojiIcons.textContent = '😕 📚';
+        badgePill.classList.add('bg-red-500/20', 'text-red-300');
+        badgePill.textContent = 'No Aprobado • Requiere Repaso';
+        submessage.innerHTML = 'Tu calificación es inferior a la nota mínima requerida (<strong class="text-ai-orange">7.0 / 10</strong>). Repasa los apartados señalados y vuelve a intentarlo para obtener tu constancia.';
+
+        certificate.classList.add('hidden');
+
+        reviewAdvice.classList.remove('hidden');
+        const toReview = weakModules.length > 0 ? weakModules.join(', ') : 'los 3 apartados teóricos del taller';
+        reviewAdvice.innerHTML = `
+          <div class="space-y-2">
+            <p class="font-bold text-red-300">⚠️ Constancia bloqueada hasta alcanzar al menos 7.0 / 10.</p>
+            <p>🔎 <strong>Diagnóstico de repaso:</strong> Revisa especialmente <strong>${toReview}</strong> antes de iniciar tu nuevo intento.</p>
+          </div>
+        `;
+
+        actionButtons.innerHTML = `
+          <button onclick="initQuiz()" class="px-7 py-3 bg-ai-orange hover:bg-amber-400 text-black font-extrabold text-sm sm:text-base rounded-xl shadow-lg transition transform hover:scale-[1.02]">
+            🔄 Hacer Evaluación Nuevamente
+          </button>
+          <button onclick="switchTab(1)" class="px-5 py-3 bg-ai-subpanel hover:bg-ai-border text-white font-semibold text-sm rounded-xl border border-ai-border transition">
+            📖 Volver a Repasar Contenidos
+          </button>
+        `;
+      }
+    }
+
+    function unlockCertificate(score10) {
+      const certificate = document.getElementById('certificate-printable');
+      const rawName = document.getElementById('student-name-input').value.trim();
+      const studentName = rawName || 'Estudiante Participante del Taller';
+
+      document.getElementById('cert-student-name').textContent = studentName;
+      document.getElementById('cert-score-stamp').textContent = `Nota Final: ${score10.toFixed(1)} / 10`;
+
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('cert-date').textContent = `Emitido el ${dateStr}`;
+
+      certificate.classList.remove('hidden');
+    }
+
+    /* =========================================================================
+       7. INICIALIZACIÓN AL CARGAR LA PÁGINA
+       ========================================================================= */
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTextToolsMenu();
+      updateParagraphPreview();
+      updateCharacterPreview();
+      initQuiz();
+    });
+  </script>
+</body>
+</html>
